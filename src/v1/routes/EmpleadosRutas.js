@@ -3,8 +3,6 @@ const router = express.Router();
 const sesController = require ('../../controllers/sesController');
 const authController = require ('../../controllers/authController')
 
-
-
 router.get('/index' ,(req,res)=>{
    res.render('index')
 })
