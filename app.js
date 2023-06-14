@@ -1,8 +1,17 @@
-const db = require('./utils/database');
+//const empleado2=require("./controles/controlEmpleados");
+//const cliente2=require("./controles/controlClientes");
+const mensaje2=require("./controles/controlMensajes");
+//const retroalimentacion2=require("./controles/controlRetroalimentaciones");
+//const usuario2=require("./controles/controlUsuarios");
+//const reporte2=require("./controles/controlReportes");
 
-db.connect((err) => {
-    if(!err)
-        console.log('Database is geconnect!');
-    else
-        console.log('Database connectie niet gelukt!  : '+ JSON.stringify(err, undefined,2));
-});
+async function ejemplo() {
+    try {
+      const result=await mensaje2.obtenerMensajePorId(1);
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+  ejemplo();
