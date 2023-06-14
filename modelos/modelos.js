@@ -1,4 +1,5 @@
 const sequelize = require('../utilidades/conexion');
+const { DataTypes, Model } = require('sequelize');
 
 const Usuario = sequelize.define("usuarios", {
     usuario: {
@@ -14,8 +15,7 @@ const Usuario = sequelize.define("usuarios", {
         type: DataTypes.INTEGER,
         allowNull: false
     }
-},
-    {
+},{
         timestamps: false,
     });
 
@@ -172,11 +172,11 @@ const Retroalimentacion = sequelize.define("retroalimentaciones",
             allowNull: false
         },
         idempleado: {
-            type: DataTypes.INTEGER, // Tipo de dato correspondiente a la clave primaria en el modelo Empleado
+            type: DataTypes.INTEGER, 
             allowNull: false
         },
         idcliente: {
-            type: DataTypes.INTEGER, // Tipo de dato correspondiente a la clave primaria en el modelo Cliente
+            type: DataTypes.INTEGER,
             allowNull: false
         }
     }
