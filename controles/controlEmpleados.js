@@ -1,21 +1,123 @@
 const modeloEmpleados = require('../modelos/modeloEmpleado');
 
-const obtenerEmpleados = () => {
-  return modeloEmpleados.Empleado.findAll({ raw: true
-    , nest: true, 
-    include: [modeloEmpleados.Mensaje, modeloEmpleados.Reporte, modeloEmpleados.Retroalimentacion] 
-  });
-};
 /*
-, nest: true, 
-    include: [modeloEmpleados.Mensaje, modeloEmpleados.Reporte, modeloEmpleados.Retroalimentacion] 
-*/
-const obtenerEmpleadoPorId = (id) => {
-  return modeloEmpleados.Empleado.findByPk(id, { raw: true
-    , nest: true, 
-    include: [modeloEmpleados.Mensaje, modeloEmpleados.Reporte, modeloEmpleados.Retroalimentacion] 
+const obtenerEmpleados = () => {
+  return modeloEmpleados.Empleado.findAll({
+    raw: false,
+    nest: true,
+    include: [
+      {
+        model: modeloEmpleados.Mensaje,
+        mapToModel: true
+      },
+      {
+        model: modeloEmpleados.Reporte,
+        mapToModel: true
+      },
+      {
+        model: modeloEmpleados.Retroalimentacion,
+        mapToModel: true
+      }
+    ]
+  }).then(empleados => {
+    let result=[];
+    for (const empleado of empleados) {
+      const mensajes = empleado.mensajes.map(mensaje => mensaje.dataValues);
+      const reportes = empleado.reportes.map(reporte => reporte.dataValues);
+      const retroalimentaciones = empleado.retroalimentaciones.map(retroalimentacion => retroalimentacion.dataValues);
+      const datosPrincipales = {
+        id: empleado.idempleado,
+        nombre: empleado.nombre,
+        apellido: empleado.apellido,
+        email: empleado.email,
+        rol: empleado.rol,
+        telefono: empleado.telefono,
+        mensajes: mensajes,
+        reportes: reportes,
+        retroalimentaciones: retroalimentaciones
+      };
+      result.push(datosPrincipales);
+    }
+    return result;
   });
 };
+*/
+const obtenerEmpleados = () => {
+  return modeloEmpleados.Empleado.findAll({
+    raw: false,
+    nest: true,
+    include: [
+      {
+        model: modeloEmpleados.Mensaje
+      },
+      {
+        model: modeloEmpleados.Reporte
+      },
+      {
+        model: modeloEmpleados.Retroalimentacion
+      }
+    ]
+  }).then(empleados => {
+ const result = [];
+    for (let i = 0; i < empleados.length; i++) {
+      let empleado = empleados[i];
+      let mensajes = empleado.mensajes.map(mensaje => mensaje.dataValues);
+      let reportes = empleado.reportes.map(mensaje => mensaje.dataValues);
+      let retroalimentaciones = empleado.retroalimentaciones.map(mensaje => mensaje.dataValues);
+      let datosPrincipales = {
+        id: empleado.idempleado,
+        nombre: empleado.nombre,
+        apellido: empleado.apellido,
+        email: empleado.email,
+        rol: empleado.rol,
+        telefono: empleado.telefono,
+        mensajes: mensajes,
+        reportes: reportes,
+        retroalimentaciones: retroalimentaciones
+      };
+      result.push(datosPrincipales);
+    }
+return result;
+  }).catch(error=>{
+    console.log(error);
+  });
+};
+const obtenerEmpleadoPorId = (id) => {
+  return modeloEmpleados.Empleado.findByPk(id, {
+    raw: false,
+    nest: true,
+    include: [
+      {
+        model: modeloEmpleados.Mensaje
+      },
+      {
+        model: modeloEmpleados.Reporte
+      },
+      {
+        model: modeloEmpleados.Retroalimentacion
+      }
+    ]
+  }).then(empleado => {
+    const mensajes = empleado.mensajes.map(mensaje => mensaje.dataValues);
+    const reportes = empleado.reportes.map(mensaje => mensaje.dataValues);
+    const retroalimentaciones = empleado.retroalimentaciones.map(mensaje => mensaje.dataValues);
+    const datosPrincipales = {
+      id: empleado.idempleado,
+      nombre: empleado.nombre,
+      apellido: empleado.apellido,
+      email: empleado.email,
+      rol: empleado.rol,
+      telefono: empleado.telefono,
+      mensajes: mensajes,
+      reportes:reportes,
+      retroalimentaciones:retroalimentaciones
+    };
+    return datosPrincipales;
+  }).catch(error=>{
+    console.log(error);
+  });
+};
+
 
 const agregarEmpleado = (empleado) => {
   return modeloEmpleados.Empleado.create(empleado, { raw: true });
