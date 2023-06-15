@@ -1,47 +1,5 @@
 const modeloEmpleados = require('../modelos/modeloEmpleado');
 
-/*
-const obtenerEmpleados = () => {
-  return modeloEmpleados.Empleado.findAll({
-    raw: false,
-    nest: true,
-    include: [
-      {
-        model: modeloEmpleados.Mensaje,
-        mapToModel: true
-      },
-      {
-        model: modeloEmpleados.Reporte,
-        mapToModel: true
-      },
-      {
-        model: modeloEmpleados.Retroalimentacion,
-        mapToModel: true
-      }
-    ]
-  }).then(empleados => {
-    let result=[];
-    for (const empleado of empleados) {
-      const mensajes = empleado.mensajes.map(mensaje => mensaje.dataValues);
-      const reportes = empleado.reportes.map(reporte => reporte.dataValues);
-      const retroalimentaciones = empleado.retroalimentaciones.map(retroalimentacion => retroalimentacion.dataValues);
-      const datosPrincipales = {
-        id: empleado.idempleado,
-        nombre: empleado.nombre,
-        apellido: empleado.apellido,
-        email: empleado.email,
-        rol: empleado.rol,
-        telefono: empleado.telefono,
-        mensajes: mensajes,
-        reportes: reportes,
-        retroalimentaciones: retroalimentaciones
-      };
-      result.push(datosPrincipales);
-    }
-    return result;
-  });
-};
-*/
 const obtenerEmpleados = () => {
   return modeloEmpleados.Empleado.findAll({
     raw: false,
@@ -58,7 +16,7 @@ const obtenerEmpleados = () => {
       }
     ]
   }).then(empleados => {
- const result = [];
+    const result = [];
     for (let i = 0; i < empleados.length; i++) {
       let empleado = empleados[i];
       let mensajes = empleado.mensajes.map(mensaje => mensaje.dataValues);
@@ -77,8 +35,8 @@ const obtenerEmpleados = () => {
       };
       result.push(datosPrincipales);
     }
-return result;
-  }).catch(error=>{
+    return result;
+  }).catch(error => {
     console.log(error);
   });
 };
@@ -109,24 +67,21 @@ const obtenerEmpleadoPorId = (id) => {
       rol: empleado.rol,
       telefono: empleado.telefono,
       mensajes: mensajes,
-      reportes:reportes,
-      retroalimentaciones:retroalimentaciones
+      reportes: reportes,
+      retroalimentaciones: retroalimentaciones
     };
     return datosPrincipales;
-  }).catch(error=>{
+  }).catch(error => {
     console.log(error);
   });
 };
 
-
 const agregarEmpleado = (empleado) => {
   return modeloEmpleados.Empleado.create(empleado, { raw: true });
 };
-
 const eliminarEmpleado = (id) => {
   return modeloEmpleados.Empleado.destroy({ where: { idempleado: id } });
 };
-
 const actualizarEmpleado = (empleado) => {
   return modeloEmpleados.Empleado.update(empleado, { where: { idempleado: empleado.idempleado } });
 };
