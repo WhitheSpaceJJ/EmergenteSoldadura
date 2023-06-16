@@ -2,7 +2,7 @@ let controlRetroalimentaciones = require('../controles/controlRetroalimentacione
 let readlineSync = require('readline-sync');
 let { Retroalimentacion } = require('../utilidades/clases');
 
-exports.obtenerRetroalimentacionesNegocio = async function() {
+exports.obtenerRetroalimentacionesNegocio = async function () {
   try {
     let results = await controlRetroalimentaciones.obtenerRetroalimentaciones();
     if (results) {
@@ -16,7 +16,7 @@ exports.obtenerRetroalimentacionesNegocio = async function() {
   }
 }
 
-exports.obtenerRetroalimentacionPorIdNegocio = async function() {
+exports.obtenerRetroalimentacionPorIdNegocio = async function () {
   try {
     let idBuscar = readlineSync.questionInt('Ingrese el ID de la retroalimentación a buscar: ');
     let results = await controlRetroalimentaciones.obtenerRetroalimentacionPorId(idBuscar);
@@ -31,7 +31,7 @@ exports.obtenerRetroalimentacionPorIdNegocio = async function() {
   }
 }
 
-exports.agregarRetroalimentacionNegocio = async function() {
+exports.agregarRetroalimentacionNegocio = async function () {
   try {
     let comentario = readlineSync.question('Ingrese el comentario: ');
     let fecha = readlineSync.question('Ingrese la fecha: ');
@@ -48,7 +48,7 @@ exports.agregarRetroalimentacionNegocio = async function() {
   }
 }
 
-exports.eliminarRetroalimentacionNegocio = async function() {
+exports.eliminarRetroalimentacionNegocio = async function () {
   try {
     let idEliminar = readlineSync.questionInt('Ingrese el ID de la retroalimentación a eliminar: ');
     let result = await controlRetroalimentaciones.eliminarRetroalimentacion(idEliminar);
@@ -60,7 +60,7 @@ exports.eliminarRetroalimentacionNegocio = async function() {
   }
 }
 
-exports.actualizarRetroalimentacionNegocio = async function() {
+exports.actualizarRetroalimentacionNegocio = async function () {
   try {
     let id2 = readlineSync.questionInt('Ingrese el ID de la retroalimentación a actualizar: ');
     let retroalimentacionExistente = await controlRetroalimentaciones.obtenerRetroalimentacionPorId(id2);
@@ -71,11 +71,17 @@ exports.actualizarRetroalimentacionNegocio = async function() {
 
     let comentario2 = readlineSync.question(`Ingrese el nuevo comentario (deje vacío para preservar el valor actual: ${retroalimentacionExistente.comentario}): `);
     let fecha2 = readlineSync.question(`Ingrese la nueva fecha (deje vacío para preservar el valor actual: ${retroalimentacionExistente.fecha}): `);
-    let calificacion2 = readlineSync.questionInt(`Ingrese la nueva calificación (deje vacío para preservar el valor actual: ${retroalimentacionExistente.calificacion}): `);
-    let idEmpleado2 = readlineSync.question(`Ingrese el nuevo ID del empleado (deje vacío para preservar el valor actual: ${retroalimentacionExistente.idEmpleado}): `);
-    let idCliente2 = readlineSync.question(`Ingrese el nuevo ID del cliente (deje vacío para preservar el valor actual: ${retroalimentacionExistente.idCliente}): `);
+    let calificacion2 = readlineSync.question(`Ingrese la nueva calificación (deje vacío para preservar el valor actual: ${retroalimentacionExistente.calificacion}): `);
+    let idempleado2 = readlineSync.question(`Ingrese el nuevo ID del empleado (deje vacío para preservar el valor actual: ${retroalimentacionExistente.idempleado}): `);
+    let idcliente2 = readlineSync.question(`Ingrese el nuevo ID del cliente (deje vacío para preservar el valor actual: ${retroalimentacionExistente.idcliente}): `);
 
-    let retroalimentacion2 = new Retroalimentacion(id2, comentario2, fecha2, calificacion2, idEmpleado2, idCliente2);
+    comentario2 = comentario2.trim() === '' ? retroalimentacionExistente.comentario : comentario2;
+    fecha2 = fecha2.trim() === '' ? retroalimentacionExistente.fecha : fecha2;
+    calificacion2 = calificacion2.trim() === '' ? retroalimentacionExistente.calificacion : parseInt(calificacion2);
+    idempleado2 = idempleado2.trim() === '' ? retroalimentacionExistente.idempleado : idempleado2;
+    idcliente2 = idcliente2.trim() === '' ? retroalimentacionExistente.idcliente : idcliente2;
+
+    let retroalimentacion2 = new Retroalimentacion(id2, comentario2, fecha2, calificacion2, idempleado2, idcliente2);
     let result = await controlRetroalimentaciones.actualizarRetroalimentacion(retroalimentacion2);
     if (result) {
       console.log('Retroalimentación actualizada exitosamente');
@@ -84,3 +90,4 @@ exports.actualizarRetroalimentacionNegocio = async function() {
     console.log('Error al actualizar retroalimentación:', error);
   }
 }
+

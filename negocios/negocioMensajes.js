@@ -74,8 +74,8 @@ exports.actualizarMensajeNegocio = async function() {
     let asunto2 = readlineSync.question(`Ingrese el nuevo asunto (deje vacío para preservar el valor actual: ${mensajeExistente.asunto}): `);
     let cuerpo2 = readlineSync.question(`Ingrese el nuevo cuerpo (deje vacío para preservar el valor actual: ${mensajeExistente.cuerpo}): `);
     let archivo2 = readlineSync.question(`Ingrese el nuevo archivo (deje vacío para preservar el valor actual: ${mensajeExistente.archivo}): `);
-    let idEmpleado2 = readlineSync.question(`Ingrese el nuevo ID del empleado (deje vacío para preservar el valor actual: ${mensajeExistente.idEmpleado}): `);
-    let idCliente2 = readlineSync.question(`Ingrese el nuevo ID del cliente (deje vacío para preservar el valor actual: ${mensajeExistente.idCliente}): `);
+    let idempleado2 = readlineSync.question(`Ingrese el nuevo ID del empleado (deje vacío para preservar el valor actual: ${mensajeExistente.idempleado}): `);
+    let idcliente2 = readlineSync.question(`Ingrese el nuevo ID del cliente (deje vacío para preservar el valor actual: ${mensajeExistente.idcliente}): `);
 
     if (fecha2.trim() === '') {
       fecha2 = mensajeExistente.fecha;
@@ -89,14 +89,14 @@ exports.actualizarMensajeNegocio = async function() {
     if (archivo2.trim() === '') {
       archivo2 = mensajeExistente.archivo;
     }
-    if (idEmpleado2.trim() === '') {
-      idEmpleado2 = mensajeExistente.idEmpleado;
+    if (idempleado2.trim() === '') {
+      idempleado2 = mensajeExistente.idempleado;
     }
-    if (idCliente2.trim() === '') {
-      idCliente2 = mensajeExistente.idCliente;
+    if (idcliente2.trim() === '') {
+      idcliente2 = mensajeExistente.idcliente;
     }
 
-    let mensaje2 = new Mensaje(id2, fecha2, asunto2, cuerpo2, archivo2, idEmpleado2, idCliente2);
+    let mensaje2 = new Mensaje(id2, fecha2, asunto2, cuerpo2, archivo2, idempleado2, idcliente2);
     let result = await controlMensajes.actualizarMensaje(mensaje2);
     if (result) {
       console.log('Mensaje actualizado exitosamente');

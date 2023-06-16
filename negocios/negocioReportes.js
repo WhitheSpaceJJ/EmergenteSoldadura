@@ -72,8 +72,8 @@ exports.actualizarReporteNegocio = async function() {
     let descripcion2 = readlineSync.question(`Ingrese la nueva descripción (deje vacío para preservar el valor actual: ${reporteExistente.descripcion}): `);
     let fecha2 = readlineSync.question(`Ingrese la nueva fecha (deje vacío para preservar el valor actual: ${reporteExistente.fecha}): `);
     let hora2 = readlineSync.question(`Ingrese la nueva hora (deje vacío para preservar el valor actual: ${reporteExistente.hora}): `);
-    let idEmpleado2 = readlineSync.question(`Ingrese el nuevo ID del empleado (deje vacío para preservar el valor actual: ${reporteExistente.idEmpleado}): `);
-    let idCliente2 = readlineSync.question(`Ingrese el nuevo ID del cliente (deje vacío para preservar el valor actual: ${reporteExistente.idCliente}): `);
+    let idempleado2 = readlineSync.question(`Ingrese el nuevo ID del empleado (deje vacío para preservar el valor actual: ${reporteExistente.idempleado}): `);
+    let idcliente2 = readlineSync.question(`Ingrese el nuevo ID del cliente (deje vacío para preservar el valor actual: ${reporteExistente.idcliente}): `);
 
     if (descripcion2.trim() === '') {
       descripcion2 = reporteExistente.descripcion;
@@ -84,14 +84,14 @@ exports.actualizarReporteNegocio = async function() {
     if (hora2.trim() === '') {
       hora2 = reporteExistente.hora;
     }
-    if (idEmpleado2.trim() === '') {
-      idEmpleado2 = reporteExistente.idEmpleado;
+    if (idempleado2.trim() === '') {
+      idempleado2 = reporteExistente.idempleado;
     }
-    if (idCliente2.trim() === '') {
-      idCliente2 = reporteExistente.idCliente;
+    if (idcliente2.trim() === '') {
+      idcliente2 = reporteExistente.idcliente;
     }
 
-    let reporte2 = new Reporte(id2, descripcion2, fecha2, hora2, idEmpleado2, idCliente2);
+    let reporte2 = new Reporte(id2, descripcion2, fecha2, hora2, idempleado2, idcliente2);
     let result = await controlReportes.actualizarReporte(reporte2);
     if (result) {
       console.log('Reporte actualizado exitosamente');
