@@ -1,22 +1,25 @@
 const modeloEmpleados = require('../modelos/modeloEmpleado');
 
-const obtenerEmpleados = () => {
-  return modeloEmpleados.Empleado.findAll({
-    raw: false,
-    nest: true,
-    include: [
-      {
-        model: modeloEmpleados.Mensaje
-      },
-      {
-        model: modeloEmpleados.Reporte
-      },
-      {
-        model: modeloEmpleados.Retroalimentacion
-      }
-    ]
-  }).then(empleados => {
+const obtenerEmpleados = async () => {
+  try {
+    const empleados = await modeloEmpleados.Empleado.findAll({
+      raw: false,
+      nest: true,
+      include: [
+        {
+          model: modeloEmpleados.Mensaje
+        },
+        {
+          model: modeloEmpleados.Reporte
+        },
+        {
+          model: modeloEmpleados.Retroalimentacion
+        }
+      ]
+    });
+
     const result = [];
+
     for (let i = 0; i < empleados.length; i++) {
       let empleado = empleados[i];
       let mensajes = empleado.mensajes.map(mensaje => mensaje.dataValues);
@@ -35,27 +38,32 @@ const obtenerEmpleados = () => {
       };
       result.push(datosPrincipales);
     }
+
     return result;
-  }).catch(error => {
-    console.log(error);
-  });
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
-const obtenerEmpleadoPorId = (id) => {
-  return modeloEmpleados.Empleado.findByPk(id, {
-    raw: false,
-    nest: true,
-    include: [
-      {
-        model: modeloEmpleados.Mensaje
-      },
-      {
-        model: modeloEmpleados.Reporte
-      },
-      {
-        model: modeloEmpleados.Retroalimentacion
-      }
-    ]
-  }).then(empleado => {
+
+const obtenerEmpleadoPorId = async (id) => {
+  try {
+    const empleado = await modeloEmpleados.Empleado.findByPk(id, {
+      raw: false,
+      nest: true,
+      include: [
+        {
+          model: modeloEmpleados.Mensaje
+        },
+        {
+          model: modeloEmpleados.Reporte
+        },
+        {
+          model: modeloEmpleados.Retroalimentacion
+        }
+      ]
+    });
+
     const mensajes = empleado.mensajes.map(mensaje => mensaje.dataValues);
     const reportes = empleado.reportes.map(mensaje => mensaje.dataValues);
     const retroalimentaciones = empleado.retroalimentaciones.map(mensaje => mensaje.dataValues);
@@ -70,20 +78,39 @@ const obtenerEmpleadoPorId = (id) => {
       reportes: reportes,
       retroalimentaciones: retroalimentaciones
     };
+
     return datosPrincipales;
-  }).catch(error => {
-    console.log(error);
-  });
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
 
-const agregarEmpleado = (empleado) => {
-  return modeloEmpleados.Empleado.create(empleado, { raw: true });
+const agregarEmpleado = async (empleado) => {
+  try {
+    return await modeloEmpleados.Empleado.create(empleado, { raw: true });
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
-const eliminarEmpleado = (id) => {
-  return modeloEmpleados.Empleado.destroy({ where: { idempleado: id } });
+
+const eliminarEmpleado = async (id) => {
+  try {
+    return await modeloEmpleados.Empleado.destroy({ where: { idempleado: id } });
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
-const actualizarEmpleado = (empleado) => {
-  return modeloEmpleados.Empleado.update(empleado, { where: { idempleado: empleado.idempleado } });
+
+const actualizarEmpleado = async (empleado) => {
+  try {
+    return await modeloEmpleados.Empleado.update(empleado, { where: { idempleado: empleado.idempleado } });
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
 
 module.exports = {

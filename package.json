@@ -2,6 +2,7 @@
   "dependencies": {
     "mysql": "^2.18.1",
     "mysql2": "^3.3.4",
+    "readline-sync": "^1.4.10",
     "sequelize": "^6.32.0"
   }
 }

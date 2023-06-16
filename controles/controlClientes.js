@@ -1,11 +1,15 @@
 const modeloClientes = require('../modelos/modeloCliente');
-const obtenerClientes = () => {
-  return modeloClientes.Cliente.findAll({
-    raw: false
-    , nest: true,
-    include: [{ model: modeloClientes.Mensaje }, { model: modeloClientes.Reporte }, { model: modeloClientes.Retroalimentacion }]
-  }).then(clientes => {
-    let result = [];
+
+const obtenerClientes = async () => {
+  try {
+    const clientes = await modeloClientes.Cliente.findAll({
+      raw: false,
+      nest: true,
+      include: [{ model: modeloClientes.Mensaje }, { model: modeloClientes.Reporte }, { model: modeloClientes.Retroalimentacion }]
+    });
+
+    const result = [];
+
     for (let i = 0; i < clientes.length; i++) {
       let cliente = clientes[i];
       let mensajes = cliente.mensajes.map(mensaje => mensaje.dataValues);
@@ -24,20 +28,22 @@ const obtenerClientes = () => {
       };
       result.push(datosPrincipales);
     }
+
     return result;
-  }).catch(error => {
-    console.log(error);
-  });
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
 
-const obtenerClientePorId = (id) => {
-  return modeloClientes.Cliente.findByPk(id, {
-    raw: false
-    , nest: true,
-    include: [{ model: modeloClientes.Mensaje }, 
-      { model: modeloClientes.Reporte }, 
-      { model: modeloClientes.Retroalimentacion }]
-  }).then(cliente => {
+const obtenerClientePorId = async (id) => {
+  try {
+    const cliente = await modeloClientes.Cliente.findByPk(id, {
+      raw: false,
+      nest: true,
+      include: [{ model: modeloClientes.Mensaje }, { model: modeloClientes.Reporte }, { model: modeloClientes.Retroalimentacion }]
+    });
+
     const mensajes = cliente.mensajes.map(mensaje => mensaje.dataValues);
     const reportes = cliente.reportes.map(mensaje => mensaje.dataValues);
     const retroalimentaciones = cliente.retroalimentaciones.map(mensaje => mensaje.dataValues);
@@ -52,22 +58,39 @@ const obtenerClientePorId = (id) => {
       reportes: reportes,
       retroalimentaciones: retroalimentaciones
     };
+
     return datosPrincipales;
-  }).catch(error => {
-    console.log(error);
-  });
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
 
-const agregarCliente = (cliente) => {
-  return modeloClientes.Cliente.create(cliente);
+const agregarCliente = async (cliente) => {
+  try {
+    return await modeloClientes.Cliente.create(cliente);
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
 
-const eliminarCliente = (id) => {
-  return modeloClientes.Cliente.destroy({ where: { rfc: id } });
+const eliminarCliente = async (id) => {
+  try {
+    return await modeloClientes.Cliente.destroy({ where: { rfc: id } });
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
 
-const actualizarCliente = (cliente) => {
-  return modeloClientes.Cliente.update(cliente, { where: { rfc: cliente.rfc } });
+const actualizarCliente = async (cliente) => {
+  try {
+    return await modeloClientes.Cliente.update(cliente, { where: { rfc: cliente.rfc } });
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
 
 module.exports = {

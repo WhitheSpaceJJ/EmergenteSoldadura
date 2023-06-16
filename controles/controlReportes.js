@@ -1,29 +1,62 @@
 const modeloReportes = require('../modelos/modeloReporte');
 
-const obtenerReportes = () => {
-  return modeloReportes.Reporte.findAll({ raw: true,
-    attributes: {
-      exclude: ['idempleado', 'idcliente']
-    },nest:true,include:[modeloReportes.Empleado,modeloReportes.Cliente]});
+const obtenerReportes = async () => {
+  try {
+    return await modeloReportes.Reporte.findAll({ 
+      raw: true,
+      attributes: {
+        exclude: ['idempleado', 'idcliente']
+      },
+      nest: true,
+      include: [modeloReportes.Empleado, modeloReportes.Cliente]
+    });
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
 
-const obtenerReportePorId = (id) => {
-  return modeloReportes.Reporte.findByPk(id,{ raw: true,
-    attributes: {
-      exclude: ['idempleado', 'idcliente']
-    },nest:true,include:[modeloReportes.Empleado,modeloReportes.Cliente]});
+const obtenerReportePorId = async (id) => {
+  try {
+    return await modeloReportes.Reporte.findByPk(id, { 
+      raw: true,
+      attributes: {
+        exclude: ['idempleado', 'idcliente']
+      },
+      nest: true,
+      include: [modeloReportes.Empleado, modeloReportes.Cliente]
+    });
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
 
-const agregarReporte = (reporte) => {
-  return modeloReportes.Reporte.create(reporte);
+const agregarReporte = async (reporte) => {
+  try {
+    return await modeloReportes.Reporte.create(reporte);
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
 
-const eliminarReporte = (id) => {
-  return modeloReportes.Reporte.destroy({ where: { idreporte: id } });
+const eliminarReporte = async (id) => {
+  try {
+    return await modeloReportes.Reporte.destroy({ where: { idreporte: id } });
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
 
-const actualizarReporte = (reporte) => {
-  return modeloReportes.Reporte.update(reporte, { where: { idreporte: reporte.idreporte } });
+const actualizarReporte = async (reporte) => {
+  try {
+    return await modeloReportes.Reporte.update(reporte, { where: { idreporte: reporte.idreporte } });
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
 
 module.exports = {

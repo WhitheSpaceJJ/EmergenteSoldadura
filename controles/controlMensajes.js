@@ -1,31 +1,62 @@
 const modeloMensajes = require('../modelos/modeloMensaje');
 
-const obtenerMensajes = () => {
-  return modeloMensajes.Mensaje.findAll({ raw: true,
-    attributes: {
-      exclude: ['idempleado', 'idcliente']
-    },
-    nest:true,include:[modeloMensajes.Empleado,modeloMensajes.Cliente]});
+const obtenerMensajes = async () => {
+  try {
+    return await modeloMensajes.Mensaje.findAll({ 
+      raw: true,
+      attributes: {
+        exclude: ['idempleado', 'idcliente']
+      },
+      nest: true,
+      include: [modeloMensajes.Empleado, modeloMensajes.Cliente]
+    });
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
 
-const obtenerMensajePorId = (id) => {
-  return modeloMensajes.Mensaje.findByPk(id,{ raw: true,
-    attributes: {
-      exclude: ['idempleado', 'idcliente']
-    },
-    nest:true,include:[modeloMensajes.Empleado,modeloMensajes.Cliente]});
+const obtenerMensajePorId = async (id) => {
+  try {
+    return await modeloMensajes.Mensaje.findByPk(id, { 
+      raw: true,
+      attributes: {
+        exclude: ['idempleado', 'idcliente']
+      },
+      nest: true,
+      include: [modeloMensajes.Empleado, modeloMensajes.Cliente]
+    });
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
 
-const agregarMensaje = (mensaje) => {
-  return modeloMensajes.Mensaje.create(mensaje);
+const agregarMensaje = async (mensaje) => {
+  try {
+    return await modeloMensajes.Mensaje.create(mensaje);
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
 
-const eliminarMensaje = (id) => {
-  return modeloMensajes.Mensaje.destroy({ where: { idmensaje: id } });
+const eliminarMensaje = async (id) => {
+  try {
+    return await modeloMensajes.Mensaje.destroy({ where: { idmensaje: id } });
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
 
-const actualizarMensaje = (mensaje) => {
-  return modeloMensajes.Mensaje.update(mensaje, { where: { idmensaje: mensaje.idmensaje } });
+const actualizarMensaje = async (mensaje) => {
+  try {
+    return await modeloMensajes.Mensaje.update(mensaje, { where: { idmensaje: mensaje.idmensaje } });
+  } catch (error) {
+    console.log("Error; ",error.message);
+    return null;
+  }
 };
 
 module.exports = {

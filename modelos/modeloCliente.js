@@ -1,4 +1,6 @@
-const {Cliente,Mensaje,Retroalimentacion,Reporte} =require("./modelos");
+const {Cliente,Mensaje,Retroalimentacion,Reporte}=require("../utilidades/modelos");
+
+
 // Definir las relaciones
 Cliente.hasMany(Mensaje,{foreignKey:"idcliente"});
 

@@ -1,5 +1,7 @@
 
-const {Empleado,Cliente,Reporte} =require("./modelos");
+const {Empleado,Cliente,Reporte} =require("../utilidades/modelos");
+
+
 
 Reporte.belongsTo(Empleado,{
   foreignKey:"idempleado"

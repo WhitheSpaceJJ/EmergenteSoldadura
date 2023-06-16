@@ -1,4 +1,4 @@
-const sequelize = require('../utilidades/conexion');
+const sequelize = require('./conexion');
 const { DataTypes, Model } = require('sequelize');
 
 const Usuario = sequelize.define("usuarios", {
@@ -104,7 +104,7 @@ const Mensaje = sequelize.define("mensajes", {
     },
     archivo: {
         type: DataTypes.BLOB,
-        allowNull: false
+        allowNull: true
     },
     idempleado: {
         type: DataTypes.INTEGER,

@@ -1,4 +1,5 @@
-const {Empleado,Cliente,Mensaje} =require("./modelos");
+const {Empleado,Cliente,Mensaje} =require("../utilidades/modelos");
+
 
 
 Mensaje.belongsTo(Empleado,{

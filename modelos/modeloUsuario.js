@@ -1,4 +1,4 @@
-const {Empleado,Usuario} =require("./modelos");
+const {Empleado,Usuario} =require("../utilidades/modelos");
 
 
 Usuario.hasOne(Empleado,{

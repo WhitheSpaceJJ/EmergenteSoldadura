@@ -1,4 +1,5 @@
-const { Empleado, Mensaje, Retroalimentacion, Reporte } = require("./modelos");
+const { Empleado, Mensaje, Retroalimentacion, Reporte } =require("../utilidades/modelos");
+
 
 Empleado.hasMany(Mensaje, { foreignKey: "idempleado" });
 Empleado.hasMany(Reporte, { foreignKey: "idempleado" });

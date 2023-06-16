@@ -1,5 +1,5 @@
 
-const {Empleado,Cliente,Retroalimentacion} =require("./modelos");
+const {Empleado,Cliente,Retroalimentacion}  =require("../utilidades/modelos");
 
 
 Retroalimentacion.belongsTo(Empleado,{
