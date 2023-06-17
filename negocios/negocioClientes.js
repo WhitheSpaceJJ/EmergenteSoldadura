@@ -2,6 +2,7 @@ let controlClientes = require('../controles/controlClientes');
 let readlineSync = require('readline-sync');
 let { Cliente } = require('../utilidades/clases');
 
+// Función para obtener todos los clientes del negocio
 exports.obtenerClientesNegocio = async function () {
   try {
     let results = await controlClientes.obtenerClientes();
@@ -16,6 +17,7 @@ exports.obtenerClientesNegocio = async function () {
   }
 }
 
+// Función para obtener un cliente por su ID
 exports.obtenerClientePorIdNegocio = async function () {
   try {
     let idBuscar = readlineSync.question('Ingrese el ID del cliente a buscar: ');
@@ -31,6 +33,7 @@ exports.obtenerClientePorIdNegocio = async function () {
   }
 }
 
+// Función para agregar un nuevo cliente
 exports.agregarClienteNegocio = async function () {
   try {
     let rfc = readlineSync.question('Ingrese el RFC: ');
@@ -49,6 +52,7 @@ exports.agregarClienteNegocio = async function () {
   }
 }
 
+// Función para eliminar un cliente por su ID
 exports.eliminarClienteNegocio = async function () {
   try {
     let idEliminar = readlineSync.questionInt('Ingrese el ID del cliente a eliminar: ');
@@ -61,6 +65,7 @@ exports.eliminarClienteNegocio = async function () {
   }
 }
 
+// Función para actualizar los datos de un cliente
 exports.actualizarClienteNegocio = async function () {
   try {
     let rfc2 = readlineSync.question('Ingrese el RFC del cliente a actualizar: ');

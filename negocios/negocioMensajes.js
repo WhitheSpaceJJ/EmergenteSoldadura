@@ -1,7 +1,9 @@
+// Se importan los módulos y las clases necesarias
 let controlMensajes = require('../controles/controlMensajes');
 let readlineSync = require('readline-sync');
 let { Mensaje } = require('../utilidades/clases');
 
+// Función para obtener la lista de mensajes del negocio
 exports.obtenerMensajesNegocio = async function() {
   try {
     let results = await controlMensajes.obtenerMensajes();
@@ -16,6 +18,7 @@ exports.obtenerMensajesNegocio = async function() {
   }
 }
 
+// Función para buscar un mensaje por su ID en el negocio
 exports.obtenerMensajePorIdNegocio = async function() {
   try {
     let idBuscar = readlineSync.questionInt('Ingrese el ID del mensaje a buscar: ');
@@ -31,6 +34,7 @@ exports.obtenerMensajePorIdNegocio = async function() {
   }
 }
 
+// Función para agregar un nuevo mensaje al negocio
 exports.agregarMensajeNegocio = async function() {
   try {
     let fecha = readlineSync.question('Ingrese la fecha: ');
@@ -49,6 +53,7 @@ exports.agregarMensajeNegocio = async function() {
   }
 }
 
+// Función para eliminar un mensaje del negocio
 exports.eliminarMensajeNegocio = async function() {
   try {
     let idEliminar = readlineSync.questionInt('Ingrese el ID del mensaje a eliminar: ');
@@ -61,6 +66,7 @@ exports.eliminarMensajeNegocio = async function() {
   }
 }
 
+// Función para actualizar los datos de un mensaje en el negocio
 exports.actualizarMensajeNegocio = async function() {
   try {
     let id2 = readlineSync.questionInt('Ingrese el ID del mensaje a actualizar: ');
@@ -70,6 +76,7 @@ exports.actualizarMensajeNegocio = async function() {
       return;
     }
 
+    // Se solicitan los nuevos datos para actualizar el mensaje
     let fecha2 = readlineSync.question(`Ingrese la nueva fecha (deje vacío para preservar el valor actual: ${mensajeExistente.fecha}): `);
     let asunto2 = readlineSync.question(`Ingrese el nuevo asunto (deje vacío para preservar el valor actual: ${mensajeExistente.asunto}): `);
     let cuerpo2 = readlineSync.question(`Ingrese el nuevo cuerpo (deje vacío para preservar el valor actual: ${mensajeExistente.cuerpo}): `);
@@ -77,6 +84,7 @@ exports.actualizarMensajeNegocio = async function() {
     let idempleado2 = readlineSync.question(`Ingrese el nuevo ID del empleado (deje vacío para preservar el valor actual: ${mensajeExistente.idempleado}): `);
     let idcliente2 = readlineSync.question(`Ingrese el nuevo ID del cliente (deje vacío para preservar el valor actual: ${mensajeExistente.idcliente}): `);
 
+    // Si el usuario no ingresa un valor nuevo, se mantiene el valor actual del mensaje
     if (fecha2.trim() === '') {
       fecha2 = mensajeExistente.fecha;
     }
@@ -96,6 +104,7 @@ exports.actualizarMensajeNegocio = async function() {
       idcliente2 = mensajeExistente.idcliente;
     }
 
+    // Se crea un nuevo objeto Mensaje con los datos actualizados
     let mensaje2 = new Mensaje(id2, fecha2, asunto2, cuerpo2, archivo2, idempleado2, idcliente2);
     let result = await controlMensajes.actualizarMensaje(mensaje2);
     if (result) {

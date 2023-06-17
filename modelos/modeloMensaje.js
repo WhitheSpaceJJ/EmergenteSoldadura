@@ -1,7 +1,7 @@
 const {Empleado,Cliente,Mensaje} =require("../utilidades/modelos");
 
 
-
+//Se Definen las relaciones
 Mensaje.belongsTo(Empleado,{
   foreignKey:"idempleado"
 });

@@ -2,6 +2,7 @@
 const {Empleado,Cliente,Retroalimentacion}  =require("../utilidades/modelos");
 
 
+//Se Definen las relaciones
 Retroalimentacion.belongsTo(Empleado,{
   foreignKey:"idempleado"
 });

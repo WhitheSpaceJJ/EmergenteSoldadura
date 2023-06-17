@@ -1,7 +1,12 @@
 const modeloEmpleados = require('../modelos/modeloEmpleado');
 
+/**
+ * Función para obtener todos los empleados con sus mensajes, reportes y retroalimentaciones.
+ * @returns Un array de objetos con los datos principales de cada empleado.
+ */
 const obtenerEmpleados = async () => {
   try {
+    // Obtener todos los empleados con sus relaciones incluidas
     const empleados = await modeloEmpleados.Empleado.findAll({
       raw: false,
       nest: true,
@@ -20,6 +25,7 @@ const obtenerEmpleados = async () => {
 
     const result = [];
 
+    // Mapear los empleados y sus relaciones en un nuevo array de objetos
     for (let i = 0; i < empleados.length; i++) {
       let empleado = empleados[i];
       let mensajes = empleado.mensajes.map(mensaje => mensaje.dataValues);
@@ -41,13 +47,19 @@ const obtenerEmpleados = async () => {
 
     return result;
   } catch (error) {
-    console.log("Error; ",error.message);
+    console.log("Error:", error.message);
     return null;
   }
 };
 
+/**
+ * Función para obtener un empleado por su ID con sus mensajes, reportes y retroalimentaciones.
+ * @param {number} id - ID del empleado a buscar.
+ * @returns Un objeto con los datos principales del empleado y sus relaciones.
+ */
 const obtenerEmpleadoPorId = async (id) => {
   try {
+    // Buscar un empleado por su ID con las relaciones incluidas
     const empleado = await modeloEmpleados.Empleado.findByPk(id, {
       raw: false,
       nest: true,
@@ -64,9 +76,12 @@ const obtenerEmpleadoPorId = async (id) => {
       ]
     });
 
+    // Obtener los mensajes, reportes y retroalimentaciones del empleado
     const mensajes = empleado.mensajes.map(mensaje => mensaje.dataValues);
     const reportes = empleado.reportes.map(mensaje => mensaje.dataValues);
     const retroalimentaciones = empleado.retroalimentaciones.map(mensaje => mensaje.dataValues);
+    
+    // Crear un objeto con los datos principales del empleado y sus relaciones
     const datosPrincipales = {
       id: empleado.idempleado,
       nombre: empleado.nombre,
@@ -81,38 +96,57 @@ const obtenerEmpleadoPorId = async (id) => {
 
     return datosPrincipales;
   } catch (error) {
-    console.log("Error; ",error.message);
+    console.log("Error:", error.message);
     return null;
   }
 };
 
+/**
+ * Función para agregar un nuevo empleado a la base de datos.
+ * @param {object} empleado - Objeto que contiene los datos del empleado a agregar.
+ * @returns El resultado de la creación del empleado.
+ */
 const agregarEmpleado = async (empleado) => {
   try {
+    // Crear un nuevo empleado con los datos proporcionados
     return await modeloEmpleados.Empleado.create(empleado, { raw: true });
   } catch (error) {
-    console.log("Error; ",error.message);
+    console.log("Error:", error.message);
     return null;
   }
 };
 
+/**
+ * Función para eliminar un empleado de la base de datos por su ID.
+ * @param {number} id - ID del empleado a eliminar.
+ * @returns El resultado de la eliminación del empleado.
+ */
 const eliminarEmpleado = async (id) => {
   try {
+    // Eliminar un empleado por su ID
     return await modeloEmpleados.Empleado.destroy({ where: { idempleado: id } });
   } catch (error) {
-    console.log("Error; ",error.message);
+    console.log("Error:", error.message);
     return null;
   }
 };
 
+/**
+ * Función para actualizar los datos de un empleado existente en la base de datos.
+ * @param {object} empleado - Objeto que contiene los nuevos datos del empleado.
+ * @returns El resultado de la actualización del empleado.
+ */
 const actualizarEmpleado = async (empleado) => {
   try {
+    // Actualizar los datos del empleado por su ID
     return await modeloEmpleados.Empleado.update(empleado, { where: { idempleado: empleado.idempleado } });
   } catch (error) {
-    console.log("Error; ",error.message);
+    console.log("Error:", error.message);
     return null;
   }
 };
 
+// Exportar las funciones para su uso en otros módulos
 module.exports = {
   obtenerEmpleadoPorId,
   obtenerEmpleados,

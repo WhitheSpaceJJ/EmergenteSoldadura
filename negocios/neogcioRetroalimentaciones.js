@@ -1,8 +1,10 @@
+// Se importan los módulos y las clases necesarias
 let controlRetroalimentaciones = require('../controles/controlRetroalimentaciones');
 let readlineSync = require('readline-sync');
 let { Retroalimentacion } = require('../utilidades/clases');
 
-exports.obtenerRetroalimentacionesNegocio = async function () {
+// Función para obtener la lista de retroalimentaciones del negocio
+exports.obtenerRetroalimentacionesNegocio = async function() {
   try {
     let results = await controlRetroalimentaciones.obtenerRetroalimentaciones();
     if (results) {
@@ -16,7 +18,8 @@ exports.obtenerRetroalimentacionesNegocio = async function () {
   }
 }
 
-exports.obtenerRetroalimentacionPorIdNegocio = async function () {
+// Función para buscar una retroalimentación por su ID en el negocio
+exports.obtenerRetroalimentacionPorIdNegocio = async function() {
   try {
     let idBuscar = readlineSync.questionInt('Ingrese el ID de la retroalimentación a buscar: ');
     let results = await controlRetroalimentaciones.obtenerRetroalimentacionPorId(idBuscar);
@@ -31,7 +34,8 @@ exports.obtenerRetroalimentacionPorIdNegocio = async function () {
   }
 }
 
-exports.agregarRetroalimentacionNegocio = async function () {
+// Función para agregar una nueva retroalimentación al negocio
+exports.agregarRetroalimentacionNegocio = async function() {
   try {
     let comentario = readlineSync.question('Ingrese el comentario: ');
     let fecha = readlineSync.question('Ingrese la fecha: ');
@@ -48,7 +52,8 @@ exports.agregarRetroalimentacionNegocio = async function () {
   }
 }
 
-exports.eliminarRetroalimentacionNegocio = async function () {
+// Función para eliminar una retroalimentación del negocio
+exports.eliminarRetroalimentacionNegocio = async function() {
   try {
     let idEliminar = readlineSync.questionInt('Ingrese el ID de la retroalimentación a eliminar: ');
     let result = await controlRetroalimentaciones.eliminarRetroalimentacion(idEliminar);
@@ -60,7 +65,8 @@ exports.eliminarRetroalimentacionNegocio = async function () {
   }
 }
 
-exports.actualizarRetroalimentacionNegocio = async function () {
+// Función para actualizar los datos de una retroalimentación en el negocio
+exports.actualizarRetroalimentacionNegocio = async function() {
   try {
     let id2 = readlineSync.questionInt('Ingrese el ID de la retroalimentación a actualizar: ');
     let retroalimentacionExistente = await controlRetroalimentaciones.obtenerRetroalimentacionPorId(id2);
@@ -75,12 +81,14 @@ exports.actualizarRetroalimentacionNegocio = async function () {
     let idempleado2 = readlineSync.question(`Ingrese el nuevo ID del empleado (deje vacío para preservar el valor actual: ${retroalimentacionExistente.idempleado}): `);
     let idcliente2 = readlineSync.question(`Ingrese el nuevo ID del cliente (deje vacío para preservar el valor actual: ${retroalimentacionExistente.idcliente}): `);
 
+    // Si el usuario no ingresa un valor nuevo, se mantiene el valor actual de la retroalimentación
     comentario2 = comentario2.trim() === '' ? retroalimentacionExistente.comentario : comentario2;
     fecha2 = fecha2.trim() === '' ? retroalimentacionExistente.fecha : fecha2;
     calificacion2 = calificacion2.trim() === '' ? retroalimentacionExistente.calificacion : parseInt(calificacion2);
     idempleado2 = idempleado2.trim() === '' ? retroalimentacionExistente.idempleado : idempleado2;
     idcliente2 = idcliente2.trim() === '' ? retroalimentacionExistente.idcliente : idcliente2;
 
+    // Se crea un nuevo objeto Retroalimentacion con los datos actualizados
     let retroalimentacion2 = new Retroalimentacion(id2, comentario2, fecha2, calificacion2, idempleado2, idcliente2);
     let result = await controlRetroalimentaciones.actualizarRetroalimentacion(retroalimentacion2);
     if (result) {
@@ -90,4 +98,3 @@ exports.actualizarRetroalimentacionNegocio = async function () {
     console.log('Error al actualizar retroalimentación:', error);
   }
 }
-
