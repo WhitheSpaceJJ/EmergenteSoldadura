@@ -48,7 +48,8 @@ const obtenerMensajePorId = async (id) => {
  */
 const agregarMensaje = async (mensaje) => {
   try {
-    return await modeloMensajes.Mensaje.create(mensaje);
+     await modeloMensajes.Mensaje.create(mensaje);
+     return true;
   } catch (error) {
     console.log("Error:", error.message);
     return null;
@@ -62,8 +63,10 @@ const agregarMensaje = async (mensaje) => {
  */
 const eliminarMensaje = async (id) => {
   try {
-    return await modeloMensajes.Mensaje.destroy({ where: { idmensaje: id } });
-  } catch (error) {
+     await modeloMensajes.Mensaje.destroy({ where: { idmensaje: id } });
+     return true;
+
+    } catch (error) {
     console.log("Error:", error.message);
     return null;
   }
@@ -76,7 +79,9 @@ const eliminarMensaje = async (id) => {
  */
 const actualizarMensaje = async (mensaje) => {
   try {
-    return await modeloMensajes.Mensaje.update(mensaje, { where: { idmensaje: mensaje.idmensaje } });
+     await modeloMensajes.Mensaje.update(mensaje, { where: { idmensaje: mensaje.idmensaje } });
+     return true;
+
   } catch (error) {
     console.log("Error:", error.message);
     return null;

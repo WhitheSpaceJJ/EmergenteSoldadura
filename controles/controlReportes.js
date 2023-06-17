@@ -48,7 +48,9 @@ const obtenerReportePorId = async (id) => {
  */
 const agregarReporte = async (reporte) => {
   try {
-    return await modeloReportes.Reporte.create(reporte);
+     await modeloReportes.Reporte.create(reporte);
+     return true;
+
   } catch (error) {
     console.log("Error:", error.message);
     return null;
@@ -63,7 +65,9 @@ const agregarReporte = async (reporte) => {
  */
 const eliminarReporte = async (id) => {
   try {
-    return await modeloReportes.Reporte.destroy({ where: { idreporte: id } });
+     await modeloReportes.Reporte.destroy({ where: { idreporte: id } });
+     return true;
+
   } catch (error) {
     console.log("Error:", error.message);
     return null;
@@ -77,7 +81,9 @@ const eliminarReporte = async (id) => {
  */
 const actualizarReporte = async (reporte) => {
   try {
-    return await modeloReportes.Reporte.update(reporte, { where: { idreporte: reporte.idreporte } });
+     await modeloReportes.Reporte.update(reporte, { where: { idreporte: reporte.idreporte } });
+     return true;
+
   } catch (error) {
     console.log("Error:", error.message);
     return null;

@@ -97,7 +97,9 @@ const obtenerClientePorId = async (id) => {
 const agregarCliente = async (cliente) => {
   try {
     // Crear un nuevo cliente con los datos proporcionados
-    return await modeloClientes.Cliente.create(cliente);
+     await modeloClientes.Cliente.create(cliente);
+     return true;
+
   } catch (error) {
     console.log("Error:", error.message);
     return null;
@@ -112,7 +114,9 @@ const agregarCliente = async (cliente) => {
 const eliminarCliente = async (id) => {
   try {
     // Eliminar un cliente por su RFC
-    return await modeloClientes.Cliente.destroy({ where: { rfc: id } });
+     await modeloClientes.Cliente.destroy({ where: { rfc: id } });
+     return true;
+
   } catch (error) {
     console.log("Error:", error.message);
     return null;
@@ -127,7 +131,9 @@ const eliminarCliente = async (id) => {
 const actualizarCliente = async (cliente) => {
   try {
     // Actualizar los datos del cliente por su RFC
-    return await modeloClientes.Cliente.update(cliente, { where: { rfc: cliente.rfc } });
+     await modeloClientes.Cliente.update(cliente, { where: { rfc: cliente.rfc } });
+     return true;
+
   } catch (error) {
     console.log("Error:", error.message);
     return null;

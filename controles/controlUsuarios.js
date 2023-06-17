@@ -75,7 +75,8 @@ const obtenerUsuario = async (usuario, contrasena) => {
  */
 const agregarUsuario = async (usuario) => {
   try {
-    return await modeloUsuarios.Usuario.create(usuario);
+    await modeloUsuarios.Usuario.create(usuario);
+    return true;
   } catch (error) {
     console.log("Error:", error.message);
     return null;
@@ -90,7 +91,8 @@ const agregarUsuario = async (usuario) => {
  */
 const eliminarUsuario = async (id) => {
   try {
-    return await modeloUsuarios.Usuario.destroy({ where: { usuario: id } });
+    await modeloUsuarios.Usuario.destroy({ where: { usuario: id } });
+    return true;
   } catch (error) {
     console.log("Error:", error.message);
     return null;
@@ -104,7 +106,8 @@ const eliminarUsuario = async (id) => {
  */
 const actualizarUsuario = async (usuario) => {
   try {
-    return await modeloUsuarios.Usuario.update(usuario, { where: { usuario: usuario.usuario } });
+   await modeloUsuarios.Usuario.update(usuario, { where: { usuario: usuario.usuario } });
+   return true;
   } catch (error) {
     console.log("Error:", error.message);
     return null;

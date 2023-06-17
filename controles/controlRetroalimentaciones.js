@@ -48,7 +48,9 @@ const obtenerRetroalimentacionPorId = async (id) => {
  */
 const agregarRetroalimentacion = async (retroalimentacion) => {
   try {
-    return await modeloRetroalimentaciones.Retroalimentacion.create(retroalimentacion);
+    await modeloRetroalimentaciones.Retroalimentacion.create(retroalimentacion);
+    return true;
+
   } catch (error) {
     console.log("Error:", error.message);
     return null;
@@ -62,7 +64,8 @@ const agregarRetroalimentacion = async (retroalimentacion) => {
  */
 const eliminarRetroalimentacion = async (id) => {
   try {
-    return await modeloRetroalimentaciones.Retroalimentacion.destroy({ where: { idretroalimentacion: id } });
+   await modeloRetroalimentaciones.Retroalimentacion.destroy({ where: { idretroalimentacion: id } });
+    return true;
   } catch (error) {
     console.log("Error:", error.message);
     return null;
@@ -76,7 +79,8 @@ const eliminarRetroalimentacion = async (id) => {
  */
 const actualizarRetroalimentacion = async (retroalimentacion) => {
   try {
-    return await modeloRetroalimentaciones.Retroalimentacion.update(retroalimentacion, { where: { idretroalimentacion: retroalimentacion.idretroalimentacion } });
+    await modeloRetroalimentaciones.Retroalimentacion.update(retroalimentacion, { where: { idretroalimentacion: retroalimentacion.idretroalimentacion } });
+    return true;
   } catch (error) {
     console.log("Error:", error.message);
     return null;

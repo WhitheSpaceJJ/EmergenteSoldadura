@@ -56,7 +56,9 @@ exports.agregarUsuarioNegocio = async function() {
   try {
     let usuario = readlineSync.question('Ingrese el usuario: ');
     let contrasena = readlineSync.question('Ingrese la contraseña: ');
-    let nuevoUsuario = new Usuario(usuario, contrasena, idEmpleado);
+    let idempleado = readlineSync.questionInt(`Ingrese elID del empleado asociado  `);
+
+    let nuevoUsuario = new Usuario(usuario, contrasena, idempleado);
     let result = await controlUsuarios.agregarUsuario(nuevoUsuario);
     if (result) {
       console.log('Usuario agregado exitosamente');
