@@ -40,8 +40,8 @@ async function menuPrincipal() {
   }
 }
 
-menuPrincipal();
-
+const hola=menuPrincipal();
+console.log(hola);
 async function menuEmpleados() {
   while (true) {
     console.log('--- Menú Empleados---');
