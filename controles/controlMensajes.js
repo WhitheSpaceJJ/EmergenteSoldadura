@@ -68,7 +68,7 @@ const eliminarMensaje = async (id) => {
     return null;
   }
 };
-
+//Funcion realizada solo para probar las actuazaciones de mensajes, ya que no sera posible actualizarlos
 /**
  * Función para actualizar los datos de un mensaje existente en la base de datos.
  * @param {object} mensaje - Objeto que contiene los nuevos datos del mensaje.

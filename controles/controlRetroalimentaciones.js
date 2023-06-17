@@ -54,7 +54,7 @@ const agregarRetroalimentacion = async (retroalimentacion) => {
     return null;
   }
 };
-
+//Funcion realizada solo para probar las eliminaciones de retroalimentaciones, ya que no sera posible actualizarlos
 /**
  * Función para eliminar una retroalimentación de la base de datos por su ID.
  * @param {number} id - ID de la retroalimentación a eliminar.
@@ -68,7 +68,7 @@ const eliminarRetroalimentacion = async (id) => {
     return null;
   }
 };
-
+//Funcion realizada solo para probar las actualizaciones de retroalimentaciones, ya que no sera posible actualizarlos
 /**
  * Función para actualizar los datos de una retroalimentación existente en la base de datos.
  * @param {object} retroalimentacion - Objeto que contiene los nuevos datos de la retroalimentación.

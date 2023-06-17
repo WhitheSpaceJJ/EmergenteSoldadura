@@ -55,6 +55,7 @@ const agregarReporte = async (reporte) => {
   }
 };
 
+//Funcion realizada solo para probar las eliminaciones de reportes, ya que no sera posible actualizarlos
 /**
  * Función para eliminar un reporte de la base de datos por su ID.
  * @param {number} id - ID del reporte a eliminar.
@@ -68,7 +69,7 @@ const eliminarReporte = async (id) => {
     return null;
   }
 };
-
+//Funcion realizada solo para probar las actuazaciones de reportes, ya que no sera posible actualizarlos
 /**
  * Función para actualizar los datos de un reporte existente en la base de datos.
  * @param {object} reporte - Objeto que contiene los nuevos datos del reporte.

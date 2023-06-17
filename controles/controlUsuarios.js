@@ -20,6 +20,7 @@ const obtenerUsuarios = async () => {
   }
 };
 
+//Funcion realizada solo para probar las consultar solo por la llave primaria
 /**
  * Función para obtener un usuario por su ID con la información del empleado asociado.
  * @param {number} id - ID del usuario a buscar.
@@ -81,6 +82,7 @@ const agregarUsuario = async (usuario) => {
   }
 };
 
+//Funcion realizada solo para probar las eliminaciones de usuarios, ya que no sera posible actualizarlos
 /**
  * Función para eliminar un usuario de la base de datos por su nombre de usuario.
  * @param {string} id - Nombre de usuario del usuario a eliminar.
