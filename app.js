@@ -1,4 +1,32 @@
+const express = require ('express');
+const port = 3000;
+const usuariosRutas = require("./rutas/usuarioRutas"); 
+const empleadosRutas = require("./rutas/empleadoRutas"); 
+const clientesRutas = require("./rutas/clienteRutas"); 
+const mensajesRutas = require("./rutas/mensajesRutas"); 
+const reportesRutas = require("./rutas/reporteRutas"); 
+const retroalimentacionesRutas = require("./rutas/retroalimentacionesRutas"); 
 
+const app = express();
+
+//app.use(express.json());
+
+app.use('/usarios', usuariosRutas);
+app.use('/empleados', empleadosRutas);
+app.use('/clientes', clientesRutas);
+app.use('/mensajes', mensajesRutas);
+app.use('/reportes', reportesRutas);
+app.use('/retroalimentaciones', retroalimentacionesRutas);
+
+app.listen(port, ()=>{
+    console.log(`Aplicación corriendo en el puerto ${port}`);
+});
+
+
+
+
+
+/*
 var negocioClientes = require("./negocios/negocioClientes");
 var negocioEmpleados = require("./negocios/negocioEmpleados");
 var negocioReportes = require("./negocios/negocioReportes");
@@ -70,7 +98,6 @@ async function menuEmpleados() {
       console.log('Opción inválida');
     }
   }
-
 }
 
 
@@ -226,3 +253,4 @@ async function menuRetroalimentaciones() {
     }
   }
 }
+*/
