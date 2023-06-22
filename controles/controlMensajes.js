@@ -48,11 +48,13 @@ const obtenerMensajePorId = async (id) => {
  */
 const agregarMensaje = async (mensaje) => {
   try {
-     await modeloMensajes.Mensaje.create(mensaje);
-     return true;
+    
+     const result=  await modeloMensajes.Mensaje.create(mensaje,{raw:true,nest:true});
+     const mensaje2=result.dataValues;
+     return mensaje2.idmensaje;
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return  error.message;
   }
 };
 
@@ -68,7 +70,7 @@ const eliminarMensaje = async (id) => {
 
     } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return  error.message;
   }
 };
 //Funcion realizada solo para probar las actuazaciones de mensajes, ya que no sera posible actualizarlos
@@ -84,7 +86,7 @@ const actualizarMensaje = async (mensaje) => {
 
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return  error.message;
   }
 };
 

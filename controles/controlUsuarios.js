@@ -16,7 +16,7 @@ const obtenerUsuarios = async () => {
     });
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return error.message;
   }
 };
 
@@ -38,7 +38,7 @@ const obtenerUsuarioPorId = async (id) => {
     });
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return error.message;
   }
 };
 
@@ -64,7 +64,7 @@ const obtenerUsuario = async (usuario, contrasena) => {
     });
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return error.message;
   }
 };
 
@@ -79,7 +79,7 @@ const agregarUsuario = async (usuario) => {
     return true;
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return error.message;
   }
 };
 
@@ -95,7 +95,7 @@ const eliminarUsuario = async (id) => {
     return true;
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return error.message;
   }
 };
 
@@ -110,7 +110,7 @@ const actualizarUsuario = async (usuario) => {
    return true;
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return error.message;
   }
 };
 

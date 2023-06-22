@@ -48,9 +48,9 @@ const obtenerRetroalimentacionPorId = async (id) => {
  */
 const agregarRetroalimentacion = async (retroalimentacion) => {
   try {
-    await modeloRetroalimentaciones.Retroalimentacion.create(retroalimentacion);
-    return true;
-
+    const result=  await modeloRetroalimentaciones.Retroalimentacion.create(retroalimentacion,{raw:true,nest:true});
+    const retroalimentacion2=result.dataValues;
+    return retroalimentacion2.idretroalimentacion;
   } catch (error) {
     console.log("Error:", error.message);
     return null;

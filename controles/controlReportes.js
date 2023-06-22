@@ -48,9 +48,9 @@ const obtenerReportePorId = async (id) => {
  */
 const agregarReporte = async (reporte) => {
   try {
-     await modeloReportes.Reporte.create(reporte);
-     return true;
-
+     const result=  await modeloReportes.Reporte.create(reporte,{raw:true,nest:true});
+     const reporte2=result.dataValues;
+     return reporte2.idreporte;
   } catch (error) {
     console.log("Error:", error.message);
     return null;

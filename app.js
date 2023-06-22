@@ -1,3 +1,5 @@
+
+/*
 const express = require ('express');
 const port = 3000;
 const usuariosRutas = require("./rutas/usuarioRutas"); 
@@ -24,9 +26,8 @@ app.listen(port, ()=>{
 
 
 
+*/
 
-
-/*
 var negocioClientes = require("./negocios/negocioClientes");
 var negocioEmpleados = require("./negocios/negocioEmpleados");
 var negocioReportes = require("./negocios/negocioReportes");
@@ -253,4 +254,3 @@ async function menuRetroalimentaciones() {
     }
   }
 }
-*/

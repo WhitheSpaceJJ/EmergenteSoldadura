@@ -42,7 +42,7 @@ const obtenerClientes = async () => {
     return result;
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return error.message;
   }
 };
 
@@ -85,7 +85,7 @@ const obtenerClientePorId = async (id) => {
     return datosPrincipales;
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return error.message;
   }
 };
 
@@ -102,7 +102,7 @@ const agregarCliente = async (cliente) => {
 
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return error.message;
   }
 };
 
@@ -119,7 +119,7 @@ const eliminarCliente = async (id) => {
 
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return error.message;
   }
 };
 
@@ -136,7 +136,7 @@ const actualizarCliente = async (cliente) => {
 
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return error.message;
   }
 };
 

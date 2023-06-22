@@ -48,7 +48,7 @@ const obtenerEmpleados = async () => {
     return result;
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return error.message;
   }
 };
 
@@ -97,7 +97,7 @@ const obtenerEmpleadoPorId = async (id) => {
     return datosPrincipales;
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return error.message;
   }
 };
 
@@ -109,12 +109,12 @@ const obtenerEmpleadoPorId = async (id) => {
 const agregarEmpleado = async (empleado) => {
   try {
     // Crear un nuevo empleado con los datos proporcionados
-     await modeloEmpleados.Empleado.create(empleado, { raw: true });
-     return true;
-
+     const result=await modeloEmpleados.Empleado.create(empleado,{raw:true,nest:true});
+     const empleado2=result.dataValues;
+     return empleado2.idempleado;
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return error.message;
   }
 };
 
@@ -128,10 +128,9 @@ const eliminarEmpleado = async (id) => {
     // Eliminar un empleado por su ID
      await modeloEmpleados.Empleado.destroy({ where: { idempleado: id } });
      return true;
-
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return error.message;
   }
 };
 
@@ -148,7 +147,7 @@ const actualizarEmpleado = async (empleado) => {
 
   } catch (error) {
     console.log("Error:", error.message);
-    return null;
+    return error.message;
   }
 };
 
