@@ -32,7 +32,7 @@ const obtenerEmpleados = async () => {
       let reportes = empleado.reportes.map(mensaje => mensaje.dataValues);
       let retroalimentaciones = empleado.retroalimentaciones.map(mensaje => mensaje.dataValues);
       let datosPrincipales = {
-        id: empleado.idempleado,
+        idempleado: empleado.idempleado,
         nombre: empleado.nombre,
         apellido: empleado.apellido,
         email: empleado.email,
@@ -83,7 +83,7 @@ const obtenerEmpleadoPorId = async (id) => {
     
     // Crear un objeto con los datos principales del empleado y sus relaciones
     const datosPrincipales = {
-      id: empleado.idempleado,
+      idempleado: empleado.idempleado,
       nombre: empleado.nombre,
       apellido: empleado.apellido,
       email: empleado.email,

@@ -101,10 +101,11 @@ exports.actualizarUsuario = async (req, res) => {
 
 exports.obtenerUsuarioPorId = async (req, res) => {
     try {
-        const result = await controlUsuarios.obtenerUsuarioPorId(req.params.usuario);
+        const result = await controlUsuarios.obtenerUsuarioPorId(req.params.id);
         if (typeof result === 'string') {
             throw result;
         } else {
+            console.log(result)
             res.status(200).json({
                 status: 'success',
                 data: {

@@ -3,7 +3,7 @@ const controlClientes = require('../controles/controlClientes');
 
 exports.agregarCliente = async (req, res) => {
     try {
-        const result = controlClientes.agregarCliente(req.body);
+        const result =await controlClientes.agregarCliente(req.body);
         if (typeof result === 'string') {
             throw result;
         } else {
@@ -23,9 +23,9 @@ exports.agregarCliente = async (req, res) => {
     }
 };
 
-exports.obtenerClientes = function (req, res) {
+exports.obtenerClientes =async (req, res) => {
     try {
-        const result = controlClientes.obtenerClientes();
+        const result =await  controlClientes.obtenerClientes();
         if (typeof result === 'string') {
             throw result;
         } else {
@@ -47,13 +47,13 @@ exports.obtenerClientes = function (req, res) {
 }
 
 //Terminado
-exports.eliminarCliente = function (req, res) {
+exports.eliminarCliente =async (req, res) => {
     try {
-        const result = controlClientes.obtenerClientePorId(req.params.id);
+        const result =await  controlClientes.obtenerClientePorId(req.params.id);
         if (typeof result === 'string') {
             throw result;
         }
-        const result2 = controlClientes.eliminarCliente(req.params.id);
+        const result2 = await controlClientes.eliminarCliente(req.params.id);
         if (typeof result2 === 'string') {
             throw result2;
         } else {
@@ -73,13 +73,13 @@ exports.eliminarCliente = function (req, res) {
 }
 
 
-exports.actualizarCliente = function (req, res) {
+exports.actualizarCliente = async (req, res) =>  {
     try {
-        const result = controlClientes.obtenerClientePorId(req.params.id);
+        const result =await  controlClientes.obtenerClientePorId(req.params.id);
         if (typeof result === 'string') {
             throw result;
         }
-        const result2 = controlClientes.actualizarCliente(req.body);
+        const result2 =await  controlClientes.actualizarCliente(req.body);
         if (typeof result2 === 'string') {
             throw result2;
         } else {
@@ -98,9 +98,9 @@ exports.actualizarCliente = function (req, res) {
     }
 }
 
-exports.obtenerClientePorId = function (req, res) {
+exports.obtenerClientePorId = async (req, res) => {
     try {
-        const result = controlClientes.obtenerClientePorId(req.params.id);
+        const result =await  controlClientes.obtenerClientePorId(req.params.id);
         if (typeof result === 'string') {
             throw result;
         }

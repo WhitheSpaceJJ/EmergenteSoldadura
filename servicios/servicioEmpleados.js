@@ -2,7 +2,7 @@ const controlEmpleados = require('../controles/controlEmpleados');
 
 exports.agregarEmpleado = async (req, res) => {
     try {
-        const result = controlEmpleados.agregarEmpleado(req.body);
+        const result = await controlEmpleados.agregarEmpleado(req.body);
         if (typeof result === 'string') {
             throw result;
         } else {
@@ -30,9 +30,9 @@ exports.agregarEmpleado = async (req, res) => {
     }
 };
 
-exports.obtenerEmpleados = function (req, res) {
+exports.obtenerEmpleados = async (req, res) =>  {
     try {
-        const result = controlEmpleados.obtenerEmpleados();
+        const result =  await controlEmpleados.obtenerEmpleados();
         if (typeof result === 'string') {
             throw result;
         } else {
@@ -53,13 +53,13 @@ exports.obtenerEmpleados = function (req, res) {
     }
 };
 
-exports.eliminarEmpleado = function (req, res) {
+exports.eliminarEmpleado =async (req, res) => {
     try {
-        const result = controlEmpleados.obtenerEmpleadoPorId(req.params.id);
+        const result =  await controlEmpleados.obtenerEmpleadoPorId(req.params.id);
         if (typeof result === 'string') {
             throw result;
         }
-        const result2 = controlEmpleados.eliminarEmpleado(req.params.id);
+        const result2 =  await controlEmpleados.eliminarEmpleado(req.params.id);
         if (typeof result2 === 'string') {
             throw result2;
         } else {
@@ -78,13 +78,13 @@ exports.eliminarEmpleado = function (req, res) {
     }
 };
 
-exports.actualizarEmpleado = function (req, res) {
+exports.actualizarEmpleado = async (req, res) =>  {
     try {
-        const result = controlEmpleados.obtenerEmpleadoPorId(req.params.id);
+        const result =await controlEmpleados.obtenerEmpleadoPorId(req.params.id);
         if (typeof result === 'string') {
             throw result;
         }
-        const result2 = controlEmpleados.actualizarEmpleado(req.body);
+        const result2 =await controlEmpleados.actualizarEmpleado(req.body);
         if (typeof result2 === 'string') {
             throw result2;
         } else {
@@ -103,9 +103,9 @@ exports.actualizarEmpleado = function (req, res) {
     }
 };
 
-exports.obtenerEmpleadoPorId = function (req, res) {
+exports.obtenerEmpleadoPorId = async (req, res) => {
     try {
-        const result = controlEmpleados.obtenerEmpleadoPorId(req.params.id);
+        const result =await controlEmpleados.obtenerEmpleadoPorId(req.params.id);
         if (typeof result === 'string') {
             throw result;
         } else {

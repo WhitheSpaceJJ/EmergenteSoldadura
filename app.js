@@ -1,7 +1,6 @@
 
-/*
 const express = require ('express');
-const port = 3000;
+const port = 4000;
 const usuariosRutas = require("./rutas/usuarioRutas"); 
 const empleadosRutas = require("./rutas/empleadoRutas"); 
 const clientesRutas = require("./rutas/clienteRutas"); 
@@ -11,9 +10,9 @@ const retroalimentacionesRutas = require("./rutas/retroalimentacionesRutas");
 
 const app = express();
 
-//app.use(express.json());
 
-app.use('/usarios', usuariosRutas);
+
+app.use('/usuarios', usuariosRutas);
 app.use('/empleados', empleadosRutas);
 app.use('/clientes', clientesRutas);
 app.use('/mensajes', mensajesRutas);
@@ -26,7 +25,7 @@ app.listen(port, ()=>{
 
 
 
-*/
+/*
 
 var negocioClientes = require("./negocios/negocioClientes");
 var negocioEmpleados = require("./negocios/negocioEmpleados");
@@ -254,3 +253,4 @@ async function menuRetroalimentaciones() {
     }
   }
 }
+*/
