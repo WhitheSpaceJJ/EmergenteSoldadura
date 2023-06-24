@@ -1,123 +1,88 @@
-
 const controlClientes = require('../controles/controlClientes');
+const asyncError = require("../utilidades/asyncError");
+const CustomeError = require("../utilidades/customeError");
 
-exports.agregarCliente = async (req, res) => {
-    try {
-        const result =await controlClientes.agregarCliente(req.body);
-        if (typeof result === 'string') {
-            throw result;
-        } else {
-            res.status(201).json({
-                status: 'sucess',
-                data: {
-                    clientes: result
-                }
-            });
-        }
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail',
-            message: err
-        });
-
-    }
-};
-
-exports.obtenerClientes =async (req, res) => {
-    try {
-        const result =await  controlClientes.obtenerClientes();
-        if (typeof result === 'string') {
-            throw result;
-        } else {
-            res.status(201).json({
-                status: 'sucess',
-                data: {
-                    clientes: result
-                }
-            });
-        }
-
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail',
-            message: err
-        });
-
-    }
-}
-
-//Terminado
-exports.eliminarCliente =async (req, res) => {
-    try {
-        const result =await  controlClientes.obtenerClientePorId(req.params.id);
-        if (typeof result === 'string') {
-            throw result;
-        }
-        const result2 = await controlClientes.eliminarCliente(req.params.id);
-        if (typeof result2 === 'string') {
-            throw result2;
-        } else {
-            res.status(201).json({
-                status: 'sucess',
-                data: {
-                    cliente: result
-                }
-            });
-        }
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail',
-            message: err
+exports.agregarCliente = asyncError(async (req, res, next) => {
+    const result = await controlClientes.agregarCliente(req.body);
+    if (typeof result === 'string') {
+        const error = new CustomeError(result, 400);
+        return next(error);
+    } else {
+        res.status(201).json({
+            status: 'success',
+            data: {
+                clientes: result
+            }
         });
     }
-}
+});
 
-
-exports.actualizarCliente = async (req, res) =>  {
-    try {
-        const result =await  controlClientes.obtenerClientePorId(req.params.id);
-        if (typeof result === 'string') {
-            throw result;
-        }
-        const result2 =await  controlClientes.actualizarCliente(req.body);
-        if (typeof result2 === 'string') {
-            throw result2;
-        } else {
-            res.status(201).json({
-                status: 'sucess',
-                data: {
-                    cliente: req.body
-                }
-            });
-        }
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail',
-            message: err
+exports.obtenerClientes = asyncError(async (req, res, next) => {
+    const result = await controlClientes.obtenerClientes();
+    if (typeof result === 'string') {
+        const error = new CustomeError(result, 400);
+        return next(error);
+    } else {
+        res.status(200).json({
+            status: 'success',
+            data: {
+                clientes: result
+            }
         });
     }
-}
+});
 
-exports.obtenerClientePorId = async (req, res) => {
-    try {
-        const result =await  controlClientes.obtenerClientePorId(req.params.id);
-        if (typeof result === 'string') {
-            throw result;
-        }
-        else {
-            res.status(201).json({
-                status: 'sucess',
-                data: {
-                    cliente: result
-                }
-            });
-        }
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail',
-            message: err
+exports.eliminarCliente = asyncError(async (req, res, next) => {
+    const result = await controlClientes.obtenerClientePorId(req.params.id);
+    if (typeof result === 'string') {
+        const error = new CustomeError(result, 400);
+        return next(error);
+    }
+    const result2 = await controlClientes.eliminarCliente(req.params.id);
+    if (typeof result2 === 'string') {
+        const error = new CustomeError(result2, 400);
+        return next(error);
+    } else {
+        res.status(200).json({
+            status: 'success',
+            data: {
+                cliente: result
+            }
         });
     }
-}
+});
 
+exports.actualizarCliente = asyncError(async (req, res, next) => {
+    const result = await controlClientes.obtenerClientePorId(req.params.id);
+    if (typeof result === 'string') {
+        const error = new CustomeError(result, 400);
+        return next(error);
+    }
+    const result2 = await controlClientes.actualizarCliente(req.body);
+    if (typeof result2 === 'string') {
+        const error = new CustomeError(result2, 400);
+        return next(error);
+    } else {
+        res.status(200).json({
+            status: 'success',
+            data: {
+                cliente: req.body
+            }
+        });
+    }
+});
 
+exports.obtenerClientePorId = asyncError(async (req, res, next) => {
+    const result = await controlClientes.obtenerClientePorId(req.params.id);
+    if (typeof result === 'string') {
+        const error = new CustomeError(result, 400);
+        return next(error);
+    } else {
+        res.status(200).json({
+            status: 'success',
+            data: {
+                cliente: result
+            }
+        });
+    }
+});

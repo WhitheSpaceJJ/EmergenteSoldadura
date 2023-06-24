@@ -1,26 +1,108 @@
 
-const express = require ('express');
+const express = require('express');
 const port = 4000;
-const usuariosRutas = require("./rutas/usuarioRutas"); 
-const empleadosRutas = require("./rutas/empleadoRutas"); 
-const clientesRutas = require("./rutas/clienteRutas"); 
-const mensajesRutas = require("./rutas/mensajesRutas"); 
-const reportesRutas = require("./rutas/reporteRutas"); 
-const retroalimentacionesRutas = require("./rutas/retroalimentacionesRutas"); 
-
+const usuariosRutas = require("./rutas/usuarioRutas");
+const empleadosRutas = require("./rutas/empleadoRutas");
+const clientesRutas = require("./rutas/clienteRutas");
+const mensajesRutas = require("./rutas/mensajesRutas");
+const reportesRutas = require("./rutas/reporteRutas");
+const retroalimentacionesRutas = require("./rutas/retroalimentacionesRutas");
+const CustomeError = require("./utilidades/customeError");
+const errorController = require("./utilidades/errrorController")
 const app = express();
+app.use(express.json());
 
 
+const validarDatos = (req, res, next) => {
+  const { body, originalUrl, method } = req;
 
-app.use('/usuarios', usuariosRutas);
-app.use('/empleados', empleadosRutas);
-app.use('/clientes', clientesRutas);
-app.use('/mensajes', mensajesRutas);
-app.use('/reportes', reportesRutas);
-app.use('/retroalimentaciones', retroalimentacionesRutas);
+  if (method === 'POST') {
+    if (
+      originalUrl === '/mensajes' &&
+      (!body.fecha || !body.asunto || !body.cuerpo || !body.idempleado || !body.idcliente)
+    ) {
+      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
+    } else if (
+      (originalUrl === '/usuarios') &&
+      (!body.usuario || !body.contrasena || !body.idempleado)
+    ) {
+      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
+    } else if (
+      originalUrl === '/reportes' &&
+      (!body.descripcion || !body.fecha || !body.hora || !body.idempleado || !body.idcliente)
+    ) {
+      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
+    } else if (
+      originalUrl === '/retroalimentaciones' &&
+      (!body.comentario || !body.fecha || !body.calificacion || !body.idempleado || !body.idcliente)
+    ) {
+      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
+    } else if (
+      originalUrl === '/clientes' &&
+      (!body.rfc || !body.nombre || !body.apellido || !body.email || !body.empresa || !body.telefono)
+    ) {
+      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
+    } else if (
+      originalUrl === '/empleados' &&
+      (!body.nombre || !body.apellido || !body.email || !body.rol || !body.telefono)
+    ) {
+      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
+    }
+  }
+  if (method === 'PUT') {
+    if (
+      originalUrl === '/mensajes' &&
+      (!body.idmensaje || !body.fecha || !body.asunto || !body.cuerpo || !body.idempleado || !body.idcliente)
+    ) {
+      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
+    } else if (
+      (originalUrl === '/usuarios') &&
+      (!body.usuario || !body.contrasena || !body.idempleado)
+    ) {
+      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
+    } else if (
+      originalUrl === '/reportes' &&
+      (!body.idreporte || !body.descripcion || !body.fecha || !body.hora || !body.idempleado || !body.idcliente)
+    ) {
+      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
+    } else if (
+      originalUrl === '/retroalimentaciones' &&
+      (!body.idretroalimentacion || !body.comentario || !body.fecha || !body.calificacion || !body.idempleado || !body.idcliente)
+    ) {
+      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
+    } else if (
+      originalUrl === '/clientes' &&
+      (!body.rfc || !body.nombre || !body.apellido || !body.email || !body.empresa || !body.telefono)
+    ) {
+      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
+    } else if (
+      originalUrl === '/empleados' &&
+      (!body.idempleado || !body.nombre || !body.apellido || !body.email || !body.rol || !body.telefono)
+    ) {
+      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
+    }
+  }
+  next();
+};
 
-app.listen(port, ()=>{
-    console.log(`Aplicación corriendo en el puerto ${port}`);
+
+app.use('/usuarios', validarDatos, usuariosRutas);
+app.use('/empleados', validarDatos, empleadosRutas);
+app.use('/clientes', validarDatos, clientesRutas);
+app.use('/mensajes', validarDatos, mensajesRutas);
+app.use('/reportes', validarDatos, reportesRutas);
+app.use('/retroalimentaciones', validarDatos, retroalimentacionesRutas);
+
+
+app.all("*", (req, res, next) => {
+  const err = new CustomeError("Cannot find " + req.originalUrl + "on the server", 404);
+  next(err);
+});
+
+app.use(errorController);
+
+app.listen(port, () => {
+  console.log(`Aplicación corriendo en el puerto ${port}`);
 });
 
 

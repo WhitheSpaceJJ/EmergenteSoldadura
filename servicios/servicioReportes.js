@@ -1,122 +1,96 @@
 const controlReportes = require('../controles/controlReportes');
+const asyncError = require("../utilidades/asyncError");
+const CustomeError = require("../utilidades/customeError");
 
-exports.agregarReporte = async (req, res) => {
-    try {
-        const result = await controlReportes.agregarReporte(req.body);
-        if (typeof result === 'string') {
-            throw result;
-        } else {
-            const { descripcion, fecha, hora, idempleado, idcliente } = req.body;
-            res.status(201).json({
-                status: 'success',
-                data: {
-                    reporte: {
-                        idreporte: result.idreporte,
-                        descripcion: descripcion,
-                        fecha: fecha,
-                        hora: hora,
-                        idempleado: idempleado,
-                        idcliente: idcliente
-                    }
-                }
-            });
+exports.agregarReporte = asyncError(async (req, res, next) => {
+  const result = await controlReportes.agregarReporte(req.body);
+  if (typeof result === 'string') {
+    const error = new CustomeError(result, 400);
+    return next(error);
+  } else {
+    const { descripcion, fecha, hora, idempleado, idcliente } = req.body;
+    res.status(201).json({
+      status: 'success',
+      data: {
+        reporte: {
+          idreporte: result.idreporte,
+          descripcion: descripcion,
+          fecha: fecha,
+          hora: hora,
+          idempleado: idempleado,
+          idcliente: idcliente
         }
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail',
-            message: err
-        });
-    }
-};
+      }
+    });
+  }
+});
 
-exports.obtenerReportes = async (req, res) => {
-    try {
-        const result = await controlReportes.obtenerReportes();
-        if (typeof result === 'string') {
-            throw result;
-        } else {
-            res.status(200).json({
-                status: 'success',
-                data: {
-                    reportes: result
-                }
-            });
-        }
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail',
-            message: err
-        });
-    }
-};
+exports.obtenerReportes = asyncError(async (req, res, next) => {
+  const result = await controlReportes.obtenerReportes();
+  if (typeof result === 'string') {
+    const error = new CustomeError(result, 400);
+    return next(error);
+  } else {
+    res.status(200).json({
+      status: 'success',
+      data: {
+        reportes: result
+      }
+    });
+  }
+});
 
-exports.eliminarReporte = async (req, res) => {
-    try {
-        const result = await controlReportes.obtenerReportePorId(req.params.id);
-        if (typeof result === 'string') {
-            throw result;
-        }
-        const result2 = await controlReportes.eliminarReporte(req.params.id);
-        if (typeof result2 === 'string') {
-            throw result2;
-        } else {
-            res.status(200).json({
-                status: 'success',
-                data: {
-                    reporte: result
-                }
-            });
-        }
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail',
-            message: err
-        });
-    }
-};
+exports.eliminarReporte = asyncError(async (req, res, next) => {
+  const result = await controlReportes.obtenerReportePorId(req.params.id);
+  if (typeof result === 'string') {
+    const error = new CustomeError(result, 400);
+    return next(error);
+  }
+  const result2 = await controlReportes.eliminarReporte(req.params.id);
+  if (typeof result2 === 'string') {
+    const error = new CustomeError(result2, 400);
+    return next(error);
+  } else {
+    res.status(200).json({
+      status: 'success',
+      data: {
+        reporte: result
+      }
+    });
+  }
+});
 
-exports.actualizarReporte = async (req, res) => {
-    try {
-        const result = await controlReportes.obtenerReportePorId(req.params.id);
-        if (typeof result === 'string') {
-            throw result;
-        }
-        const result2 = await controlReportes.actualizarReporte(req.body);
-        if (typeof result2 === 'string') {
-            throw result2;
-        } else {
-            res.status(200).json({
-                status: 'success',
-                data: {
-                    reporte: req.body
-                }
-            });
-        }
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail',
-            message: err
-        });
-    }
-};
+exports.actualizarReporte = asyncError(async (req, res, next) => {
+  const result = await controlReportes.obtenerReportePorId(req.params.id);
+  if (typeof result === 'string') {
+    const error = new CustomeError(result, 400);
+    return next(error);
+  }
+  const result2 = await controlReportes.actualizarReporte(req.body);
+  if (typeof result2 === 'string') {
+    const error = new CustomeError(result2, 400);
+    return next(error);
+  } else {
+    res.status(200).json({
+      status: 'success',
+      data: {
+        reporte: req.body
+      }
+    });
+  }
+});
 
-exports.obtenerReportePorId = async (req, res) => {
-    try {
-        const result = await controlReportes.obtenerReportePorId(req.params.id);
-        if (typeof result === 'string') {
-            throw result;
-        } else {
-            res.status(200).json({
-                status: 'success',
-                data: {
-                    reporte: result
-                }
-            });
-        }
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail',
-            message: err
-        });
-    }
-};
+exports.obtenerReportePorId = asyncError(async (req, res, next) => {
+  const result = await controlReportes.obtenerReportePorId(req.params.id);
+  if (typeof result === 'string') {
+    const error = new CustomeError(result, 400);
+    return next(error);
+  } else {
+    res.status(200).json({
+      status: 'success',
+      data: {
+        reporte: result
+      }
+    });
+  }
+});

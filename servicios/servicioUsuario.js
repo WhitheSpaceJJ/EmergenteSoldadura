@@ -1,143 +1,109 @@
-
-
 const controlUsuarios = require('../controles/controlUsuarios');
+const asynError = require("../utilidades/asyncError");
+const CustomeError = require("../utilidades/customeError");
 
-exports.agregarUsuario = async (req, res) => {
-    try {
-        const result = await controlUsuarios.agregarUsuario(req.body);
-        if (typeof result === 'string') {
-            throw result;
-        } else {
-            const { usuario, contrasena, idempleado } = req.body;
-            res.status(201).json({
-                status: 'success',
-                data: {
-                    usuario: {
-                        usuario: usuario,
-                        contrasena: contrasena,
-                        idempleado: idempleado
-                    }
+exports.agregarUsuario = asynError(async (req, res, next) => {
+    const result = await controlUsuarios.agregarUsuario(req.body);
+    if (typeof result === 'string') {
+        const error = new CustomeError(result, 400);
+        return next(error);
+    } else {
+        const { usuario, contrasena, idempleado } = req.body;
+        res.status(201).json({
+            status: 'success',
+            data: {
+                usuario: {
+                    usuario: usuario,
+                    contrasena: contrasena,
+                    idempleado: idempleado
                 }
-            });
-        }
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail',
-            message: err
+            }
         });
     }
-};
+});
 
-exports.obtenerUsuarios = async (req, res) => {
-    try {
-        const result = await controlUsuarios.obtenerUsuarios();
-        if (typeof result === 'string') {
-            throw result;
-        } else {
-            res.status(200).json({
-                status: 'success',
-                data: {
-                    usuarios: result
-                }
-            });
-        }
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail',
-            message: err
+exports.obtenerUsuarios = asynError(async (req, res, next) => {
+    const result = await controlUsuarios.obtenerUsuarios();
+    if (typeof result === 'string') {
+        const error = new CustomeError(result, 400);
+        return next(error);
+    } else {
+        res.status(200).json({
+            status: 'success',
+            data: {
+                usuarios: result
+            }
         });
     }
-};
+});
 
-exports.eliminarUsuario = async (req, res) => {
-    try {
-        const result = await controlUsuarios.obtenerUsuarioPorId(req.params.usuario);
-        if (typeof result === 'string') {
-            throw result;
-        }
-        const result2 = await controlUsuarios.eliminarUsuario(req.params.usuario);
-        if (typeof result2 === 'string') {
-            throw result2;
-        } else {
-            res.status(200).json({
-                status: 'success',
-                data: {
-                    usuario: result
-                }
-            });
-        }
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail',
-            message: err
+exports.eliminarUsuario = asynError(async (req, res, next) => {
+    const result = await controlUsuarios.obtenerUsuarioPorId(req.params.usuario);
+    if (typeof result === 'string') {
+        const error = new CustomeError(result, 400);
+        return next(error);
+    }
+    const result2 = await controlUsuarios.eliminarUsuario(req.params.usuario);
+    if (typeof result2 === 'string') {
+        const error = new CustomeError(result2, 400);
+        return next(error);
+    } else {
+        res.status(200).json({
+            status: 'success',
+            data: {
+                usuario: result
+            }
         });
     }
-};
+});
 
-exports.actualizarUsuario = async (req, res) => {
-    try {
-        const result = await controlUsuarios.obtenerUsuarioPorId(req.params.usuario);
-        if (typeof result === 'string') {
-            throw result;
-        }
-        const result2 = await controlUsuarios.actualizarUsuario(req.body);
-        if (typeof result2 === 'string') {
-            throw result2;
-        } else {
-            res.status(200).json({
-                status: 'success',
-                data: {
-                    usuario: req.body
-                }
-            });
-        }
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail',
-            message: err
+exports.actualizarUsuario = asynError(async (req, res, next) => {
+    const result = await controlUsuarios.obtenerUsuarioPorId(req.params.usuario);
+    if (typeof result === 'string') {
+        const error = new CustomeError(result, 400);
+        return next(error);
+    }
+    const result2 = await controlUsuarios.actualizarUsuario(req.body);
+    if (typeof result2 === 'string') {
+        const error = new CustomeError(result2, 400);
+        return next(error);
+    } else {
+        res.status(200).json({
+            status: 'success',
+            data: {
+                usuario: req.body
+            }
         });
     }
-};
+});
 
-exports.obtenerUsuarioPorId = async (req, res) => {
-    try {
-        const result = await controlUsuarios.obtenerUsuarioPorId(req.params.id);
-        if (typeof result === 'string') {
-            throw result;
-        } else {
-            console.log(result)
-            res.status(200).json({
-                status: 'success',
-                data: {
-                    usuario: result
-                }
-            });
-        }
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail',
-            message: err
+exports.obtenerUsuarioPorId = asynError(async (req, res, next) => {
+    const result = await controlUsuarios.obtenerUsuarioPorId(req.params.id);
+    if (typeof result === 'string') {
+        const error = new CustomeError(result, 400);
+        return next(error);
+    } else {
+        console.log(result);
+        res.status(200).json({
+            status: 'success',
+            data: {
+                usuario: result
+            }
         });
     }
-};
-exports.obtenerUsuario = async (req, res) => {
-    try {
-        const result = await controlUsuarios.obtenerUsuario(req.params.usuario,req.params.contrasena);
-        if (typeof result === 'string') {
-            throw result;
-        } else {
-            res.status(200).json({
-                status: 'success',
-                data: {
-                    usuario: result
-                }
-            });
-        }
-    } catch (err) {
-        res.status(400).json({
-            status: 'fail',
-            message: err
-        });
+});
 
+exports.obtenerUsuario = asynError(async (req, res, next) => {
+    const result = await controlUsuarios.obtenerUsuario(req.params.usuario, req.params.contrasena);
+    if (typeof result === 'string') {
+        const error = new CustomeError(result, 400);
+        return next(error);
+    } else {
+        res.status(200).json({
+            status: 'success',
+            data: {
+                usuario: result
+            }
+        });
     }
-};
+});
