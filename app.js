@@ -12,75 +12,32 @@ const errorController = require("./utilidades/errrorController")
 const app = express();
 app.use(express.json());
 
-
 const validarDatos = (req, res, next) => {
   const { body, originalUrl, method } = req;
-
-  if (method === 'POST') {
-    if (
-      originalUrl === '/mensajes' &&
-      (!body.fecha || !body.asunto || !body.cuerpo || !body.idempleado || !body.idcliente)
-    ) {
-      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
-    } else if (
-      (originalUrl === '/usuarios') &&
-      (!body.usuario || !body.contrasena || !body.idempleado)
-    ) {
-      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
-    } else if (
-      originalUrl === '/reportes' &&
-      (!body.descripcion || !body.fecha || !body.hora || !body.idempleado || !body.idcliente)
-    ) {
-      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
-    } else if (
-      originalUrl === '/retroalimentaciones' &&
-      (!body.comentario || !body.fecha || !body.calificacion || !body.idempleado || !body.idcliente)
-    ) {
-      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
-    } else if (
-      originalUrl === '/clientes' &&
-      (!body.rfc || !body.nombre || !body.apellido || !body.email || !body.empresa || !body.telefono)
-    ) {
-      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
-    } else if (
-      originalUrl === '/empleados' &&
-      (!body.nombre || !body.apellido || !body.email || !body.rol || !body.telefono)
-    ) {
-      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
-    }
-  }
-  if (method === 'PUT') {
-    if (
-      originalUrl === '/mensajes' &&
-      (!body.idmensaje || !body.fecha || !body.asunto || !body.cuerpo || !body.idempleado || !body.idcliente)
-    ) {
-      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
-    } else if (
-      (originalUrl === '/usuarios') &&
-      (!body.usuario || !body.contrasena || !body.idempleado)
-    ) {
-      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
-    } else if (
-      originalUrl === '/reportes' &&
-      (!body.idreporte || !body.descripcion || !body.fecha || !body.hora || !body.idempleado || !body.idcliente)
-    ) {
-      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
-    } else if (
-      originalUrl === '/retroalimentaciones' &&
-      (!body.idretroalimentacion || !body.comentario || !body.fecha || !body.calificacion || !body.idempleado || !body.idcliente)
-    ) {
-      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
-    } else if (
-      originalUrl === '/clientes' &&
-      (!body.rfc || !body.nombre || !body.apellido || !body.email || !body.empresa || !body.telefono)
-    ) {
-      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
-    } else if (
-      originalUrl === '/empleados' &&
-      (!body.idempleado || !body.nombre || !body.apellido || !body.email || !body.rol || !body.telefono)
-    ) {
-      return res.status(400).json({ mensaje: 'Faltan campos obligatorios en la solicitud' });
-    }
+  if (
+    (method === 'POST' &&
+      (
+        (originalUrl === '/mensajes' && (!body.fecha || !body.asunto || !body.cuerpo || !body.idempleado || !body.idcliente)) ||
+        (originalUrl === '/usuarios' && (!body.usuario || !body.contrasena || !body.idempleado)) ||
+        (originalUrl === '/reportes' && (!body.descripcion || !body.fecha || !body.hora || !body.idempleado || !body.idcliente)) ||
+        (originalUrl === '/retroalimentaciones' && (!body.comentario || !body.fecha || !body.calificacion || !body.idempleado || !body.idcliente)) ||
+        (originalUrl === '/clientes' && (!body.rfc || !body.nombre || !body.apellido || !body.email || !body.empresa || !body.telefono)) ||
+        (originalUrl === '/empleados' && (!body.nombre || !body.apellido || !body.email || !body.rol || !body.telefono))
+      )
+    ) ||
+    (method === 'PUT' &&
+      (
+        (originalUrl === '/mensajes' && (!body.idmensaje || !body.fecha || !body.asunto || !body.cuerpo || !body.idempleado || !body.idcliente)) ||
+        (originalUrl === '/usuarios' && (!body.usuario || !body.contrasena || !body.idempleado)) ||
+        (originalUrl === '/reportes' && (!body.idreporte || !body.descripcion || !body.fecha || !body.hora || !body.idempleado || !body.idcliente)) ||
+        (originalUrl === '/retroalimentaciones' && (!body.idretroalimentacion || !body.comentario || !body.fecha || !body.calificacion || !body.idempleado || !body.idcliente)) ||
+        (originalUrl === '/clientes' && (!body.rfc || !body.nombre || !body.apellido || !body.email || !body.empresa || !body.telefono)) ||
+        (originalUrl === '/empleados' && (!body.idempleado || !body.nombre || !body.apellido || !body.email || !body.rol || !body.telefono))
+      )
+    )
+  ) {
+    const error = new CustomeError('Faltan campos obligatorios en la solicitud', 400);
+    return next(error);
   }
   next();
 };
