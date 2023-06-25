@@ -1,11 +1,24 @@
 {
+  "name": "gestion-comentarios-soldadura",
+  "version": "1.0.0",
+  "description": "Proyecto en el cual la empresa de soldura evaluara a sus empleados y clientes , con el fin de que se tomen medidas administrativas ante los empleados y que los empleaodos tomen precauciones con el tipo de cliente a tratar.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "Equipo Ositos Cariñositos",
+  "license": "ITSON",
   "dependencies": {
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "mysql": "^2.18.1",
     "mysql2": "^3.3.4",
-    "nodemon": "^2.0.22",
     "readline-sync": "^1.4.10",
     "sequelize": "^6.32.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }
+

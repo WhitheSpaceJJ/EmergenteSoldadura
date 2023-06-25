@@ -176,11 +176,11 @@ const Retroalimentacion = sequelize.define("retroalimentaciones", {
     },
     idempleado: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     idcliente: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     }
 }, {
     timestamps: false // Desactivar las columnas de timestamps (createdAt, updatedAt)

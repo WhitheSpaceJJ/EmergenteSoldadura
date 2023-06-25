@@ -5,7 +5,7 @@ const CustomeError = require("../utilidades/customeError");
 exports.agregarEmpleado = asyncError(async (req, res, next) => {
   const result = await controlEmpleados.agregarEmpleado(req.body);
   if (typeof result === 'string') {
-    const error = new CustomeError(result, 400);
+    const error = new CustomeError('Error al agregar un empleado', 400);
     return next(error);
   } else {
     const { nombre, apellido, email, rol, telefono } = req.body;
@@ -28,7 +28,7 @@ exports.agregarEmpleado = asyncError(async (req, res, next) => {
 exports.obtenerEmpleados = asyncError(async (req, res, next) => {
   const result = await controlEmpleados.obtenerEmpleados();
   if (typeof result === 'string') {
-    const error = new CustomeError(result, 400);
+    const error = new CustomeError('No se encontraron empleados', 404);
     return next(error);
   } else {
     res.status(200).json({
@@ -43,12 +43,12 @@ exports.obtenerEmpleados = asyncError(async (req, res, next) => {
 exports.eliminarEmpleado = asyncError(async (req, res, next) => {
   const result = await controlEmpleados.obtenerEmpleadoPorId(req.params.id);
   if (typeof result === 'string') {
-    const error = new CustomeError(result, 400);
+    const error = new CustomeError('No se encontró el empleado', 404);
     return next(error);
   }
   const result2 = await controlEmpleados.eliminarEmpleado(req.params.id);
   if (typeof result2 === 'string') {
-    const error = new CustomeError(result2, 400);
+    const error = new CustomeError('Error al eliminar el empleado', 400);
     return next(error);
   } else {
     res.status(200).json({
@@ -63,12 +63,12 @@ exports.eliminarEmpleado = asyncError(async (req, res, next) => {
 exports.actualizarEmpleado = asyncError(async (req, res, next) => {
   const result = await controlEmpleados.obtenerEmpleadoPorId(req.params.id);
   if (typeof result === 'string') {
-    const error = new CustomeError(result, 400);
+    const error = new CustomeError('Error al obtener el empleado', 404 );
     return next(error);
   }
   const result2 = await controlEmpleados.actualizarEmpleado(req.body);
   if (typeof result2 === 'string') {
-    const error = new CustomeError(result2, 400);
+    const error = new CustomeError('Error al actualizar el empleado', 400);
     return next(error);
   } else {
     res.status(200).json({
@@ -83,7 +83,7 @@ exports.actualizarEmpleado = asyncError(async (req, res, next) => {
 exports.obtenerEmpleadoPorId = asyncError(async (req, res, next) => {
   const result = await controlEmpleados.obtenerEmpleadoPorId(req.params.id);
   if (typeof result === 'string') {
-    const error = new CustomeError(result, 400);
+    const error = new CustomeError('Error al obtener el empleado', 404);
     return next(error);
   } else {
     res.status(200).json({

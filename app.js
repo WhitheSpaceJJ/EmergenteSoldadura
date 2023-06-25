@@ -17,7 +17,7 @@ const validarDatos = (req, res, next) => {
   if (
     (method === 'POST' &&
       (
-        (originalUrl === '/mensajes' && (!body.fecha || !body.asunto || !body.cuerpo || !body.idempleado || !body.idcliente)) ||
+        (originalUrl === '/mensajes' && (!body.fecha || !body.asunto || !body.archivo || !body.cuerpo || !body.idempleado || !body.idcliente)) ||
         (originalUrl === '/usuarios' && (!body.usuario || !body.contrasena || !body.idempleado)) ||
         (originalUrl === '/reportes' && (!body.descripcion || !body.fecha || !body.hora || !body.idempleado || !body.idcliente)) ||
         (originalUrl === '/retroalimentaciones' && (!body.comentario || !body.fecha || !body.calificacion || !body.idempleado || !body.idcliente)) ||
@@ -27,7 +27,7 @@ const validarDatos = (req, res, next) => {
     ) ||
     (method === 'PUT' &&
       (
-        (originalUrl === '/mensajes' && (!body.idmensaje || !body.fecha || !body.asunto || !body.cuerpo || !body.idempleado || !body.idcliente)) ||
+        (originalUrl === '/mensajes' && (!body.idmensaje || !body.fecha || !body.archivo|| !body.asunto || !body.cuerpo || !body.idempleado || !body.idcliente)) ||
         (originalUrl === '/usuarios' && (!body.usuario || !body.contrasena || !body.idempleado)) ||
         (originalUrl === '/reportes' && (!body.idreporte || !body.descripcion || !body.fecha || !body.hora || !body.idempleado || !body.idcliente)) ||
         (originalUrl === '/retroalimentaciones' && (!body.idretroalimentacion || !body.comentario || !body.fecha || !body.calificacion || !body.idempleado || !body.idcliente)) ||
