@@ -12,6 +12,7 @@ const errorController = require("./utilidades/errrorController")
 const app = express();
 app.use(express.json());
 
+//Dentro de este metodo se estblecera la validacion del jwt 
 const validarDatos = (req, res, next) => {
   const { body, originalUrl, method } = req;
   if (
@@ -41,7 +42,6 @@ const validarDatos = (req, res, next) => {
   }
   next();
 };
-
 
 app.use('/usuarios', validarDatos, usuariosRutas);
 app.use('/empleados', validarDatos, empleadosRutas);
