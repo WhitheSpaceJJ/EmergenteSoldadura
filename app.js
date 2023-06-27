@@ -43,22 +43,22 @@ const validarDatos = (req, res, next) => {
   }
   next();
 };
-const verificarTokenMiddleware = async (req, res, next) => {
+const jwtMiddleware = async (req, res, next) => {
   const token = req.headers.authorization;
-  const secretKey = 'your-secret-key';
+  const secreto = 'osos-carinosos';
 
   try {
-    await jwtController.verifyToken(token, secretKey);
+    await jwtController.verifyToken(token, secreto);
     next();
   } catch (error) {
-    const customError = new CustomeError('Token inválido', 401);
+    const customError = new CustomeError('Token inválido, no ha iniciado session.', 401);
     next(customError);
   }
 };
 
 app.use('/usuarios', validarDatos, usuariosRutas);
 
-app.use(verificarTokenMiddleware);
+app.use(jwtMiddleware);
 
 app.use('/empleados', validarDatos, empleadosRutas);
 app.use('/clientes', validarDatos, clientesRutas);

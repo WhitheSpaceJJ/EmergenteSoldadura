@@ -3,12 +3,12 @@ const asyncError = require("../utilidades/asyncError");
 const CustomError = require("../utilidades/customeError");
 const jwtController = require("../utilidades/jwtController");
 
-const verificarTokenMiddleware = async (req, res, next) => {
+const jwtMiddleware = async (req, res, next) => {
   const token = req.headers.authorization;
-  const secretKey = 'your-secret-key'; 
+  const secreto = 'osos-carinosos';
 
   try {
-    await jwtController.verifyToken(token, secretKey);
+    await jwtController.verifyToken(token, secreto);
     next();
   } catch (error) {
     const customError = new CustomError('Token inválido', 401);
@@ -16,7 +16,7 @@ const verificarTokenMiddleware = async (req, res, next) => {
   }
 };
 
-exports.agregarUsuario = verificarTokenMiddleware, asyncError(async (req, res, next) => {
+exports.agregarUsuario = jwtMiddleware, asyncError(async (req, res, next) => {
   const result = await controlUsuarios.agregarUsuario(req.body);
   if (typeof result === 'string') {
     const error = new CustomError('Error al agregar un usuario', 400);
@@ -35,7 +35,7 @@ exports.agregarUsuario = verificarTokenMiddleware, asyncError(async (req, res, n
     });
   }
 });
-exports.obtenerUsuarios = verificarTokenMiddleware, asyncError(async (req, res, next) => {
+exports.obtenerUsuarios = jwtMiddleware, asyncError(async (req, res, next) => {
   const result = await controlUsuarios.obtenerUsuarios();
   if (typeof result === 'string') {
     const error = new CustomError('No se encontraron usuarios', 404);
@@ -51,7 +51,7 @@ exports.obtenerUsuarios = verificarTokenMiddleware, asyncError(async (req, res, 
 });
 
 
-exports.eliminarUsuario =verificarTokenMiddleware, asyncError(async (req, res, next) => {
+exports.eliminarUsuario =jwtMiddleware, asyncError(async (req, res, next) => {
   const result = await controlUsuarios.obtenerUsuarioPorId(req.params.usuario);
   if (typeof result === 'string') {
     const error = new CustomError('No se encontró el usuario', 404);
@@ -71,7 +71,7 @@ exports.eliminarUsuario =verificarTokenMiddleware, asyncError(async (req, res, n
   }
 });
 
-exports.actualizarUsuario =verificarTokenMiddleware, asyncError(async (req, res, next) => {
+exports.actualizarUsuario =jwtMiddleware, asyncError(async (req, res, next) => {
   const result = await controlUsuarios.obtenerUsuarioPorId(req.params.usuario);
   if (typeof result === 'string') {
     const error = new CustomError('Error al obtener el usuario', 404);
@@ -91,7 +91,7 @@ exports.actualizarUsuario =verificarTokenMiddleware, asyncError(async (req, res,
   }
 });
 
-exports.obtenerUsuarioPorId =verificarTokenMiddleware, asyncError(async (req, res, next) => {
+exports.obtenerUsuarioPorId =jwtMiddleware, asyncError(async (req, res, next) => {
   const result = await controlUsuarios.obtenerUsuarioPorId(req.params.id);
   if (typeof result === 'string') {
     const error = new CustomError('Error al obtener el usuario', 400);
@@ -116,8 +116,8 @@ exports.obtenerUsuario = asyncError(async (req, res, next) => {
   } else {
     const { usuario, contrasena, idempleado } = result;
     const payload = { usuario, contrasena, idempleado };
-    const secretKey = 'your-secret-key';
-    const token = await jwtController.generateToken(payload, secretKey);
+    const secreto = 'osos-carinosos';
+    const token = await jwtController.generateToken(payload, secreto);
 
     res.status(200).json({
       status: 'success',
