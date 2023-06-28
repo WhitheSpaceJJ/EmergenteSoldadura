@@ -106,10 +106,9 @@ exports.obtenerUsuarioPorId =jwtMiddleware, asyncError(async (req, res, next) =>
   }
 });
 
-
-
-exports.obtenerUsuario = asyncError(async (req, res, next) => {
-  const result = await controlUsuarios.obtenerUsuario(req.params.usuario, req.params.contrasena);
+exports.obtenerUsuario=async (req, res, next) => {
+  const { usuario, contrasena } = req.body; 
+  const result = await controlUsuarios.obtenerUsuario(usuario, contrasena);
   if (typeof result === 'string') {
     const error = new CustomError('Error al obtener el usuario', 400);
     return next(error);
@@ -127,4 +126,4 @@ exports.obtenerUsuario = asyncError(async (req, res, next) => {
       }
     });
   }
-});
+}
