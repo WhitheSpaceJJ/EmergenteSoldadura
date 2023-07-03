@@ -48,9 +48,7 @@ const validarDatos = (req, res, next) => {
 
 const jwtMiddleware = async (req, res, next) => {
   const { body, originalUrl, method } = req;
-  if (originalUrl === '/usuarios') {
 
-  } else {
     const token = req.headers.authorization;
     const secreto = 'osos-carinosos';
 
@@ -61,11 +59,10 @@ const jwtMiddleware = async (req, res, next) => {
       const customeError = new CustomeError('Token inválido, no ha iniciado sesión.', 401);
       next(customeError);
     }
-  }
 };
 
 
-app.use('/usuarios', jwtMiddleware, validarDatos, usuariosRutas);
+app.use('/usuarios',validarDatos, usuariosRutas);
 app.use('/empleados', jwtMiddleware, validarDatos, empleadosRutas);
 app.use('/clientes', jwtMiddleware, validarDatos, clientesRutas);
 app.use('/mensajes', jwtMiddleware, validarDatos, mensajesRutas);

@@ -76,7 +76,6 @@
         var username = document.getElementById("username").value;
         var password = document.getElementById("password").value;
         const url = `http://localhost:3000/usuarios/usuario?usuario=${encodeURIComponent(username)}&contrasena=${encodeURIComponent(password)}`;
-
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
         xhr.onload = function () {
