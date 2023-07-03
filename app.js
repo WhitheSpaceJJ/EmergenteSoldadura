@@ -16,23 +16,21 @@ app.use(express.json());
 app.use(cors());
 const validarDatos = (req, res, next) => {
   const { body, originalUrl, method } = req;
+  console.log(body);
   if (
     (method === 'POST' &&
       (
-        (originalUrl === '/mensajes' && (!body.fecha || !body.asunto || !body.archivo || !body.cuerpo || !body.idempleado || !body.idcliente)) ||
+        (originalUrl === '/mensajes' && (!body.fecha || !body.asunto || !body.cuerpo  )) ||
         (originalUrl === '/usuarios' && (!body.usuario || !body.contrasena || !body.idempleado)) ||
-        (originalUrl === '/reportes' && (!body.descripcion || !body.fecha || !body.hora || !body.idempleado || !body.idcliente)) ||
-        (originalUrl === '/retroalimentaciones' && (!body.comentario || !body.fecha || !body.calificacion || !body.idempleado || !body.idcliente)) ||
+        (originalUrl === '/reportes' && (!body.descripcion || !body.fecha || !body.hora )) ||
+        (originalUrl === '/retroalimentaciones' && (!body.comentario || !body.fecha || !body.calificacion )) ||
         (originalUrl === '/clientes' && (!body.rfc || !body.nombre || !body.apellido || !body.email || !body.empresa || !body.telefono)) ||
         (originalUrl === '/empleados' && (!body.nombre || !body.apellido || !body.email || !body.rol || !body.telefono))
       )
     ) ||
     (method === 'PUT' &&
       (
-        (originalUrl === '/mensajes' && (!body.idmensaje || !body.fecha || !body.archivo || !body.asunto || !body.cuerpo || !body.idempleado || !body.idcliente)) ||
         (originalUrl === '/usuarios' && (!body.usuario || !body.contrasena || !body.idempleado)) ||
-        (originalUrl === '/reportes' && (!body.idreporte || !body.descripcion || !body.fecha || !body.hora || !body.idempleado || !body.idcliente)) ||
-        (originalUrl === '/retroalimentaciones' && (!body.idretroalimentacion || !body.comentario || !body.fecha || !body.calificacion || !body.idempleado || !body.idcliente)) ||
         (originalUrl === '/clientes' && (!body.rfc || !body.nombre || !body.apellido || !body.email || !body.empresa || !body.telefono)) ||
         (originalUrl === '/empleados' && (!body.idempleado || !body.nombre || !body.apellido || !body.email || !body.rol || !body.telefono))
       )

@@ -112,11 +112,11 @@ const Mensaje = sequelize.define("mensajes", {
     },
     idempleado: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     idcliente: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     }
 }, {
     timestamps: false // Desactivar las columnas de timestamps (createdAt, updatedAt)
@@ -144,11 +144,11 @@ const Reporte = sequelize.define("reportes", {
     },
     idempleado: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     idcliente: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     }
 }, {
     timestamps: false // Desactivar las columnas de timestamps (createdAt, updatedAt)
