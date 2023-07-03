@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gestión de Reportes</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+        }
+  
+        header {
+          background-color: #f2f2f2;
+          padding: 20px;
+          text-align: center;
+        }
+  
+        main {
+          padding: 20px;
+        }
+  
+        section {
+          margin-bottom: 20px;
+        }
+  
+        h1 {
+          margin: 0;
+        }
+  
+        h2 {
+          margin: 0;
+        }
+  
+        table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+  
+        th,
+        td {
+          padding: 8px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+        }
+  
+        th {
+          background-color: #f2f2f2;
+        }
+  
+        button {
+          padding: 10px 20px;
+          font-size: 16px;
+          cursor: pointer;
+        }
+  
+        button.primary {
+          background-color: #4caf50;
+          color: white;
+        }
+  
+        button.secondary {
+          background-color: #f2f2f2;
+          color: black;
+        }
+  
+        form {
+          margin-bottom: 10px;
+        }
+  
+        label {
+          display: block;
+          margin-bottom: 5px;
+        }
+  
+        input,
+        select {
+          width: 100%;
+          padding: 8px;
+          border-radius: 4px;
+          border: 1px solid #ccc;
+          box-sizing: border-box;
+        }
+  
+        button[type="submit"] {
+          background-color: #4caf50;
+          color: white;
+          border: none;
+        }
+      </style>
+    <script>
+      var token;
+      window.onload = function () {
+        var urlParams = new URLSearchParams(window.location.search);
+        token = urlParams.get("token");
+
+        if (!token) {
+          alert("Requiere iniciar sesión");
+          window.location.href = "index.html";
+        } else {
+          console.log("Token:", token);
+        }
+      };
+    </script>
+  </head>
+
+  <body>
+    <header>
+      <h1>Gestión de Reportes</h1>
+    </header>
+
+    <nav>
+      <button onclick="showSection('agregar')">
+        Agregar Reporte
+      </button>
+      <button onclick="showSection('consultar')">
+        Consultar Reportes
+      </button>
+    </nav>
+
+    <section id="agregar-section" style="display: none">
+      <h2>Agregar Reporte</h2>
+      <label for="tipo">Tipo:</label>
+      <select id="tipo" onchange="showForm()">
+        <option value="empleado">EMPLEADO</option>
+        <option value="cliente">CLIENTE</option>
+      </select>
+
+      <form id="agregar-empleado-form" style="display: none">
+        <label for="id-empleado">Empleado:</label>
+        <select id="id-empleado" name="id-empleado" required>
+          <!-- Opciones de empleados -->
+        </select>
+
+        <label for="descripcion-empleado">Descripción:</label>
+        <textarea
+          id="descripcion-empleado"
+          name="descripcion-empleado"
+        ></textarea>
+
+        <label for="fecha-empleado">Fecha:</label>
+        <input type="date" id="fecha-empleado" name="fecha-empleado" />
+
+        <label for="hora-empleado">Hora:</label>
+        <input type="time" id="hora-empleado" name="hora-empleado" />
+
+        <button type="button" onclick="agregarReporte()">
+          Agregar
+        </button>
+      </form>
+
+      <form id="agregar-cliente-form" style="display: none">
+        <label for="id-cliente">Cliente:</label>
+        <select id="id-cliente" name="id-cliente" required>
+          <!-- Opciones de clientes -->
+        </select>
+
+        <label for="descripcion-cliente">Descripción:</label>
+        <textarea
+          id="descripcion-cliente"
+          name="descripcion-cliente"
+        ></textarea>
+
+        <label for="fecha-cliente">Fecha:</label>
+        <input type="date" id="fecha-cliente" name="fecha-cliente" />
+
+        <label for="hora-cliente">Hora:</label>
+        <input type="time" id="hora-cliente" name="hora-cliente" />
+
+        <button type="button" onclick="agregarReporte()">
+          Agregar
+        </button>
+      </form>
+    </section>
+
+    <section id="consultar-section" style="display: none">
+      <h2>Consultar Reportes</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID Reporte</th>
+            <th>Descripción</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>ID Empleado</th>
+            <th>ID Cliente</th>
+          </tr>
+        </thead>
+        <tbody id="reportes-table-body">
+          <!-- Los reportes se cargarán aquí -->
+        </tbody>
+      </table>
+    </section>
+
+    <script>
+      function showSection(sectionId) {
+        var sections = document.getElementsByTagName("section");
+        for (var i = 0; i < sections.length; i++) {
+          sections[i].style.display = "none";
+        }
+        document.getElementById(sectionId + "-section").style.display = "block";
+        if (sectionId === "consultar") {
+          consultarReportes();
+        }
+      }
+
+      function showForm() {
+        var tipo = document.getElementById("tipo").value;
+        if (tipo === "empleado") {
+          document.getElementById("agregar-empleado-form").style.display =
+            "block";
+          document.getElementById("agregar-cliente-form").style.display =
+            "none";
+          rellenarSelectEmpleados();
+        } else if (tipo === "cliente") {
+          document.getElementById("agregar-empleado-form").style.display =
+            "none";
+          document.getElementById("agregar-cliente-form").style.display =
+            "block";
+          rellenarSelectClientes();
+        }
+      }
+
+      function rellenarSelectEmpleados() {
+        var select = document.getElementById("id-empleado");
+
+        fetch("http://localhost:3000/empleados", {
+          headers: {
+            authorization: token,
+          },
+        })
+          .then(function (response) {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Error en la solicitud GET");
+            }
+          })
+          .then(function (data) {
+            if (data.status === "success") {
+              select.innerHTML = "";
+
+              data.data.empleados.forEach(function (empleado) {
+                var option = document.createElement("option");
+                option.value = empleado.idempleado;
+                option.textContent = empleado.nombre;
+
+                select.appendChild(option);
+              });
+            } else {
+              throw new Error("Error en la respuesta del servidor");
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+
+      function rellenarSelectClientes() {
+        var select = document.getElementById("id-cliente");
+
+        fetch("http://localhost:3000/clientes", {
+          headers: {
+            authorization: token,
+          },
+        })
+          .then(function (response) {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Error en la solicitud GET");
+            }
+          })
+          .then(function (data) {
+            if (data.status === "success") {
+              select.innerHTML = "";
+
+              data.data.clientes.forEach(function (cliente) {
+                var option = document.createElement("option");
+                option.value = cliente.rfc;
+                option.textContent = cliente.nombre;
+
+                select.appendChild(option);
+              });
+            } else {
+              throw new Error("Error en la respuesta del servidor");
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+      function consultarReportes() {
+        var tableBody = document.getElementById("reportes-table-body");
+
+        var  url = "http://localhost:3000/reportes";
+
+        fetch(url, {
+          headers: {
+            authorization: token,
+          },
+        })
+          .then(function (response) {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Error en la solicitud GET");
+            }
+          })
+          .then(function (data) {
+            if (data.status === "success") {
+              tableBody.innerHTML = "";
+
+              data.data.reportes.forEach(function (reporte) {
+                var row = document.createElement("tr");
+
+                var idReporteCell = document.createElement("td");
+                idReporteCell.textContent = reporte.idreporte;
+                row.appendChild(idReporteCell);
+
+                var descripcionCell = document.createElement("td");
+                descripcionCell.textContent = reporte.descripcion;
+                row.appendChild(descripcionCell);
+
+                var fechaCell = document.createElement("td");
+                fechaCell.textContent = reporte.fecha;
+                row.appendChild(fechaCell);
+
+                var horaCell = document.createElement("td");
+                horaCell.textContent = reporte.hora;
+                row.appendChild(horaCell);
+
+                var idEmpleadoCell = document.createElement("td");
+                idEmpleadoCell.textContent = reporte.empleado.idempleado  || "-----";
+                row.appendChild(idEmpleadoCell);
+
+                var idClienteCell = document.createElement("td");
+                idClienteCell.textContent = reporte.cliente.rfc || "-----";
+                row.appendChild(idClienteCell);
+
+                tableBody.appendChild(row);
+              });
+            } else {
+              throw new Error("Error en la respuesta del servidor");
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+      function agregarReporte() {
+  var tipo = document.getElementById("tipo").value;
+
+  if (tipo === "empleado") {
+    var form = document.getElementById("agregar-empleado-form");
+    var idempleado = document.getElementById("id-empleado").value;
+    var descripcion = form.elements["descripcion-empleado"].value;
+    var fecha = form.elements["fecha-empleado"].value;
+    var hora = form.elements["hora-empleado"].value;
+
+    var formData = {
+      idempleado: idempleado,
+      descripcion: descripcion,
+      fecha: fecha,
+      hora: hora,
+    };
+
+    fetch("http://localhost:3000/reportes", {
+      method: "POST",
+      headers: {
+        authorization: token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then(function (response) {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Error en la solicitud POST");
+        }
+      })
+      .then(function (data) {
+        if (data.status === "success") {
+          console.log("Reporte agregado con éxito");
+          form.reset();
+        } else {
+          throw new Error("Error en la respuesta del servidor");
+        }
+      })
+      .catch(function (error) {
+        console.error("Error:", error);
+      });
+  } else if (tipo === "cliente") {
+    var form = document.getElementById("agregar-cliente-form");
+    var idcliente = document.getElementById("id-cliente").value;
+    var descripcion = form.elements["descripcion-cliente"].value;
+    var fecha = form.elements["fecha-cliente"].value;
+    var hora = form.elements["hora-cliente"].value;
+
+    var formData = {
+      idcliente: idcliente,
+      descripcion: descripcion,
+      fecha: fecha,
+      hora: hora,
+    };
+
+    fetch("http://localhost:3000/reportes", {
+      method: "POST",
+      headers: {
+        authorization: token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then(function (response) {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Error en la solicitud POST");
+        }
+      })
+      .then(function (data) {
+        if (data.status === "success") {
+          console.log("Reporte agregado con éxito");
+          form.reset();
+        } else {
+          throw new Error("Error en la respuesta del servidor");
+        }
+      })
+      .catch(function (error) {
+        console.error("Error:", error);
+      });
+  }
+}
+
+
+    </script>
+  </body>
+</html>

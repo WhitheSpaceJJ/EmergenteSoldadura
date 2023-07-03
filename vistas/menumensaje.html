@@ -199,7 +199,7 @@
         });
         document.getElementById(section + "-section").style.display = "block";
         if (section === "consultar") {
-            consultarMensajes();
+          consultarMensajes();
         }
       }
       function showForm() {
@@ -420,52 +420,42 @@
                 cuerpoCell.textContent = mensaje.cuerpo;
                 row.appendChild(cuerpoCell);
 
- // Archivo
-var archivoCell = document.createElement("td");
-if (mensaje.archivo instanceof Blob) {
-  var archivoButton = document.createElement("button");
-  archivoButton.textContent = "Descargar";
-  
-  archivoButton.addEventListener("click", function() {
-    // Crear un FileReader
-    var reader = new FileReader();
-    
-    // Manejar el evento onload, que se ejecuta cuando la lectura se ha completado
-    reader.onload = function(e) {
-      // Obtener los datos leídos como ArrayBuffer
-      var arrayBuffer = e.target.result;
-      
-      // Crear un Blob con los datos leídos
-      var blob = new Blob([arrayBuffer], { type: mensaje.archivo.type });
-      
-      // Crear una URL temporal para el Blob
-      var url = URL.createObjectURL(blob);
-      
-      // Crear un enlace de descarga
-      var downloadLink = document.createElement("a");
-      downloadLink.href = url;
-      downloadLink.download = mensaje.archivo.name; // Establecer el nombre del archivo
-      
-      // Hacer clic en el enlace de descarga automáticamente
-      downloadLink.click();
-      
-      // Liberar la URL temporal
-      URL.revokeObjectURL(url);
-    };
-    
-    // Leer el archivo Blob como ArrayBuffer
-    reader.readAsArrayBuffer(mensaje.archivo);
-  });
-  
-  archivoCell.appendChild(archivoButton);
-}
-row.appendChild(archivoCell);
+                var archivoCell = document.createElement("td");
+                if (mensaje.archivo instanceof Blob) {
+                  var archivoButton = document.createElement("button");
+                  archivoButton.textContent = "Descargar";
 
+                  archivoButton.addEventListener("click", function () {
+                    var reader = new FileReader();
 
+                    reader.onload = function (e) {
+                      var arrayBuffer = e.target.result;
+
+                      var blob = new Blob([arrayBuffer], {
+                        type: "application/octet-stream",
+                      });
+
+                      var url = URL.createObjectURL(blob);
+
+                      var downloadLink = document.createElement("a");
+                      downloadLink.href = url;
+                      downloadLink.download = mensaje.archivo;
+
+                      downloadLink.click();
+
+                      URL.revokeObjectURL(url);
+                    };
+                    reader.readAsArrayBuffer(mensaje.archivo);
+                  });
+
+                  archivoCell.appendChild(archivoButton);
+                }
+                row.appendChild(archivoCell);
 
                 // ID Empleado
                 var idEmpleadoCell = document.createElement("td");
-                idEmpleadoCell.textContent = mensaje.empleado.idempleado || "-----";
+                idEmpleadoCell.textContent =
+                  mensaje.empleado.idempleado || "-----";
                 row.appendChild(idEmpleadoCell);
 
                 // ID Cliente
