@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gestión de Usuarios</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #f2f2f2;
+      padding: 20px;
+      text-align: center;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    section {
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    h2 {
+      margin: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button.primary {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    button.secondary {
+      background-color: #f2f2f2;
+      color: black;
+    }
+
+    form {
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button[type="submit"] {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+    }
+  </style>  <script>
+    var token;
+    window.onload = function() {
+      var urlParams = new URLSearchParams(window.location.search);
+      token = urlParams.get("token");
+  
+      if (!token) {
+        alert("Requiere iniciar sesión");
+        window.location.href = "index.html";
+      } else {
+        console.log("Token:", token);
+      }
+    };
+    </script>
+</head>
+<header>
+  <h1>Gestión de Usuarios</h1>
+</header>
+<body>
+
+<nav>
+  <button onclick="showSection('agregar')">Agregar Usuario</button>
+  <button onclick="showSection('actualizar')">Actualizar Usuario</button>
+  <button onclick="showSection('eliminar')">Eliminar Usuario</button>
+  <button onclick="showSection('consultar')">Consultar Usuarios</button>
+</nav>
+
+<main>
+  <section id="agregar-section" style="display: none">
+    <h2>Agregar Usuario</h2>
+    <form id="agregar-form">
+      <div>
+        <label for="usuario">Usuario:</label>
+        <input type="text" id="usuario" name="usuario" required />
+      </div>
+      <div>
+        <label for="contrasena">Contraseña:</label>
+        <input type="password" id="contrasena" name="contrasena" required />
+      </div>
+      <div>
+        <label for="idempleado">ID Empleado:</label>
+        <select id="idempleado" name="idempleado" required>
+          <!-- Opciones de usuarios generadas dinámicamente -->
+        </select>
+      </div>
+      <button type="button" onclick="agregarUsuario()">
+        Agregar Usuario
+      </button>
+    </form>
+  </section>
+
+  <section id="actualizar-section" style="display: none">
+    <h2>Actualizar Usuario</h2>
+    <table id="usuarios-table">
+      <thead>
+        <tr>
+          <th>ID Empleado</th>
+          <th>Usuario</th>
+          <th>Contraseña</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <form id="actualizar-form">
+      <div>
+        <label for="idempleado-actualizar">ID Empleado:</label>
+        <select id="idempleado-actualizar" name="idempleado-actualizar" required>
+          <!-- Opciones de usuarios generadas dinámicamente -->
+        </select>
+      </div>
+      <div>
+        <label for="usuario-actualizar">Usuario:</label>
+        <input
+          type="text"
+          id="usuario-actualizar"
+          name="usuario-actualizar"
+          required
+        />
+      </div>
+      <div>
+        <label for="contrasena-actualizar">Contraseña:</label>
+        <input
+          type="password"
+          id="contrasena-actualizar"
+          name="contrasena-actualizar"
+          required
+        />
+      </div>
+      <button type="button" onclick="actualizarUsuario()">
+        Actualizar Usuario
+      </button>
+    </form>
+  </section>
+
+  <section id="eliminar-section" style="display: none">
+    <h2>Eliminar Usuario</h2>
+    <table id="usuarios-eliminar-table">
+      <thead>
+        <tr>
+          <th>ID Empleado</th>
+          <th>Usuario</th>
+          <th>Contraseña</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <form id="eliminar-form">
+      <div>
+        <label for="idempleado-eliminar">ID Empleado:</label>
+        <select id="idempleado-eliminar" name="idempleado-eliminar" required>
+          <!-- Opciones de usuarios generadas dinámicamente -->
+        </select>
+      </div>
+      <button type="button" onclick="eliminarUsuario()">
+        Eliminar Usuario
+      </button>
+    </form>
+  </section>
+
+  <section id="consultar-section" style="display: none">
+    <h2>Consultar Usuarios</h2>
+    <table id="usuarios-consultar-table">
+      <thead>
+        <tr>
+          <th>ID Empleado</th>
+          <th>Usuario</th>
+          <th>Contraseña</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+</main>
+
+
+<script>
+  function showSection(section) {
+    document.querySelectorAll("section").forEach((sec) => {
+      sec.style.display = "none";
+    });
+    document.getElementById(section + "-section").style.display = "block";
+    if (section === "consultar") {
+          mostrarTablaConsultar();
+        } else if (section === "eliminar") {
+          mostrarTablaEliminar();
+        } else if (section === "actualizar") {
+          mostrarTablaActualizar();
+        }
+  }
+  function mostrarTablaConsultar() {
+  var table = document.getElementById("usuarios-consultar-table");
+
+  fetch("http://localhost:3000/usuarios", {
+    method: "GET",
+    headers: {
+      authorization: token,
+    },
+  })
+    .then(function(response) {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error("Error en la solicitud GET");
+      }
+    })
+    .then(function(data) {
+      if (data.status === "success") {
+        alert(JSON.parse(    data.data));
+        table.innerHTML = "";
+
+        data.data.usuarios.forEach(function(usuario) {
+          var row = table.insertRow();
+
+          var idempleadoCell = row.insertCell();
+          idempleadoCell.textContent = usuario.empleado.idempleado;
+
+          var usuarioCell = row.insertCell();
+          usuarioCell.textContent = usuario.usuario;
+
+          var contrasenaCell = row.insertCell();
+          contrasenaCell.textContent = usuario.contrasena;
+
+          row.appendChild(idempleadoCell);
+          row.appendChild(usuarioCell);
+          row.appendChild(contrasenaCell);
+
+          table.appendChild(row);
+        });
+      } else {
+        throw new Error("Error en la respuesta del servidor");
+      }
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+}
+
+
+</script>
+</body>
+</html>

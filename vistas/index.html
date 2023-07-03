@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Iniciar sesión</title>
+
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f2f2f2;
+        font-family: Arial, sans-serif;
+      }
+
+      .login-container {
+        width: 300px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 10px;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        width: 100%;
+        padding: 5px;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+      }
+
+      button[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        background-color: #4caf50;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <h2>Iniciar sesión</h2>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="username">Usuario:</label>
+          <input type="text" id="username" name="username" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Contraseña:</label>
+          <input type="password" id="password" name="password" required />
+        </div>
+        <button type="submit">Iniciar sesión</button>
+      </form>
+    </div>
+    <script>
+      document.getElementById("login-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        const url = `http://localhost:3000/usuarios/usuario?usuario=${encodeURIComponent(username)}&contrasena=${encodeURIComponent(password)}`;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            var rol = response.data.usuario.empleado.rol;
+            var token = response.data.token;
+
+            if (rol === "EMPLEADO") {
+              window.location.href = "empleado.html?token=" + token;
+            } else if (rol === "ADMINISTRADOR") {
+              window.location.href = "administrador.html?token=" + token;
+            }
+          } else {
+            alert("Inicio de sesión fallido");
+          }
+        };
+        xhr.onerror = function () {
+          console.error("Error en la solicitud");
+        };
+        xhr.send();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Empleado</title>
+    <script>
+      window.onload = function () {
+        var urlParams = new URLSearchParams(window.location.search);
+        var token = urlParams.get("token");
+        if (!token) {
+          alert("Requiere iniciar sesión");
+          window.location.href = "index.html";
+        } else {
+          console.log("Token:", token);
+        }
+      };
+      var logoutButton = document.getElementById("logout-button");
+      logoutButton.addEventListener("click", logout);
+
+      function redirectToMenuCliente() {
+        window.location.href = "menucliente.html?token=" + token;
+      }
+
+      function redirectToMenuRetro() {
+        window.location.href = "menuretro.html?token=" + token;
+      }
+
+      function redirectToMenuMensaje() {
+        window.location.href = "menumensaje.html?token=" + token;
+      }
+
+      function redirectToMenuReporte() {
+        window.location.href = "menureporte.html?token=" + token;
+      }
+
+      var gestionClientesButton = document.getElementById(
+        "gestion-clientes-button"
+      );
+      gestionClientesButton.addEventListener("click", redirectToMenuCliente);
+
+      var administrarRetroButton = document.getElementById(
+        "administrar-retro-button"
+      );
+      administrarRetroButton.addEventListener("click", redirectToMenuRetro);
+
+      var administrarMensajesButton = document.getElementById(
+        "administrar-mensajes-button"
+      );
+      administrarMensajesButton.addEventListener(
+        "click",
+        redirectToMenuMensaje
+      );
+
+      var administrarReportesButton = document.getElementById(
+        "administrar-reportes-button"
+      );
+      administrarReportesButton.addEventListener(
+        "click",
+        redirectToMenuReporte
+      );
+    </script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: center;
+        width: 600px;
+      }
+
+      .column {
+        display: flex;
+        flex-direction: column;
+        margin: 10px;
+      }
+
+      .button {
+        margin: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      h1 {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>Empleado</h1>
+      <div class="button-container">
+        <div class="column">
+          <button class="button">Gestión de Clientes</button>
+          <button class="button">Administrar Retroalimentaciones</button>
+        </div>
+        <div class="column">
+          <button class="button">Administrar Mensajes</button>
+          <button class="button">Administrar Reportes</button>
+        </div>
+      </div>
+      <div class="button-container">
+        <button id="logout-button" class="button">Cerrar sesión</button>
+      </div>
+    </div>
+  </body>
+</html>

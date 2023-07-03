@@ -1,0 +1,641 @@
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gestión de Empleados</title>
+  </head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #f2f2f2;
+      padding: 20px;
+      text-align: center;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    section {
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    h2 {
+      margin: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button.primary {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    button.secondary {
+      background-color: #f2f2f2;
+      color: black;
+    }
+
+    form {
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button[type="submit"] {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+    }
+  </style>  <script>
+    var token;
+    window.onload = function() {
+      var urlParams = new URLSearchParams(window.location.search);
+      token = urlParams.get("token");
+  
+      if (!token) {
+        alert("Requiere iniciar sesión");
+        window.location.href = "index.html";
+      } else {
+        console.log("Token:", token);
+      }
+    };
+    </script>
+    <body>
+
+    <header>
+      <h1>Gestión de Empleados</h1>
+    </header>
+
+    <nav>
+      <button onclick="showSection('agregar')">Agregar Empleado</button>
+      <button onclick="showSection('actualizar')">Actualizar Empleado</button>
+      <button onclick="showSection('eliminar')">Eliminar Empleado</button>
+      <button onclick="showSection('consultar')">Consultar Empleados</button>
+    </nav>
+
+    <main>
+      <section id="agregar-section" style="display: none">
+        <h2>Agregar Empleado</h2>
+        <form id="agregar-form">
+       
+          <div>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required />
+          </div>
+          <div>
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" required />
+          </div>
+          <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+          <div>
+            <label for="rol">Rol:</label>
+            <select id="rol" name="rol" required>
+              <option value="EMPLEADO">EMPLEADO</option>
+              <option value="ADMINISTRADOR">ADMINISTRADOR</option>
+            </select>
+          </div>
+          <div>
+            <label for="telefono">Teléfono:</label>
+            <input type="text" id="telefono" name="telefono" required />
+          </div>
+          <button type="button" onclick="agregarEmpleado()">
+            Agregar Empleado
+          </button>
+        </form>
+      </section>
+  
+      <section id="actualizar-section" style="display: none">
+        <h2>Actualizar Empleado</h2>
+        <table id="empleados-table">
+          <thead>
+            <tr>
+              <th>ID Empleado</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Teléfono</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <form id="actualizar-form">
+          <div>
+            <label for="idempleado-actualizar">ID Empleado:</label>
+            <input
+              type="text"
+              id="idempleado-actualizar"
+              name="idempleado-actualizar"
+              readonly
+            />
+          </div>
+          <div>
+            <label for="nombre-actualizar">Nombre:</label>
+            <input
+              type="text"
+              id="nombre-actualizar"
+              name="nombre-actualizar"
+              required
+            />
+          </div>
+          <div>
+            <label for="apellido-actualizar">Apellido:</label>
+            <input
+              type="text"
+              id="apellido-actualizar"
+              name="apellido-actualizar"
+              required
+            />
+          </div>
+          <div>
+            <label for="email-actualizar">Email:</label>
+            <input
+              type="email"
+              id="email-actualizar"
+              name="email-actualizar"
+              required
+            />
+          </div>
+          <div>
+            <label for="rol-actualizar">Rol:</label>
+            <select id="rol-actualizar" name="rol-actualizar" required>
+              <option value="EMPLEADO">EMPLEADO</option>
+              <option value="ADMINISTRADOR">ADMINISTRADOR</option>
+            </select>
+          </div>
+          <div>
+            <label for="telefono-actualizar">Teléfono:</label>
+            <input
+              type="text"
+              id="telefono-actualizar"
+              name="telefono-actualizar"
+              required
+            />
+          </div>
+          <button type="button" onclick="actualizarEmpleado()">
+            Actualizar Empleado
+          </button>
+        </form>
+      </section>
+
+      <section id="eliminar-section" style="display: none">
+        <h2>Eliminar Empleado</h2>
+        <table id="empleados-eliminar-table">
+          <thead>
+            <tr>
+              <th>ID Empleado</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Teléfono</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <form id="eliminar-form">
+          <div>
+            <label for="idempleado-eliminar">ID Empleado:</label>
+            <input type="text" id="idempleado-eliminar" name="idempleado-eliminar" required />
+          </div>
+          <button type="button" onclick="eliminarEmpleado()">
+            Eliminar Empleado
+          </button>
+        </form>
+      </section>
+
+      <section id="consultar-section" style="display: none">
+        <h2>Consultar Empleados</h2>
+        <table id="empleados-consultar-table">
+          <thead>
+            <tr>
+              <th>ID Empleado</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Teléfono</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </main>
+
+
+    <script>
+      function showSection(section) {
+        document.querySelectorAll("section").forEach((sec) => {
+          sec.style.display = "none";
+        });
+        document.getElementById(section + "-section").style.display = "block";
+        if (section === "consultar") {
+          mostrarTablaConsultar();
+        } else if (section === "eliminar") {
+          mostrarTablaEliminar();
+        } else if (section === "actualizar") {
+          mostrarTablaActualizar();
+        }
+      }
+    
+      function mostrarTablaConsultar() {
+        var table = document.getElementById("empleados-consultar-table");
+    
+        fetch("http://localhost:3000/empleados", {
+          method: "GET",
+          headers: {
+            authorization: token,
+          },
+        })
+          .then(function (response) {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Error en la solicitud GET");
+            }
+          })
+          .then(function (data) {
+            if (data.status === "success") {
+              table.innerHTML = "";
+    
+              data.data.empleados.forEach(function (empleado) {
+                var row = table.insertRow();
+    
+                var idempleadoCell = row.insertCell();
+                idempleadoCell.textContent = empleado.idempleado;
+    
+                var nombreCell = row.insertCell();
+                nombreCell.textContent = empleado.nombre;
+    
+                var apellidoCell = row.insertCell();
+                apellidoCell.textContent = empleado.apellido;
+    
+                var emailCell = row.insertCell();
+                emailCell.textContent = empleado.email;
+    
+                var rolCell = row.insertCell();
+                rolCell.textContent = empleado.rol;
+    
+                var telefonoCell = row.insertCell();
+                telefonoCell.textContent = empleado.telefono;
+              });
+            } else {
+              throw new Error("Error en la respuesta del servidor");
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+    
+      function selectEmpleadoActualizar(button) {
+        const row = button.parentNode.parentNode;
+        const idempleado = row.cells[0].innerText;
+        const nombre = row.cells[1].innerText;
+        const apellido = row.cells[2].innerText;
+        const email = row.cells[3].innerText;
+        const rol = row.cells[4].innerText;
+        const telefono = row.cells[5].innerText;
+    
+        document.getElementById("idempleado-actualizar").value = idempleado;
+        document.getElementById("nombre-actualizar").value = nombre;
+        document.getElementById("apellido-actualizar").value = apellido;
+        document.getElementById("email-actualizar").value = email;
+        document.getElementById("rol-actualizar").value = rol;
+        document.getElementById("telefono-actualizar").value = telefono;
+      }
+    
+      function mostrarTablaEliminar() {
+        var table = document.getElementById("empleados-eliminar-table");
+    
+        fetch("http://localhost:3000/empleados", {
+          method: "GET",
+          headers: {
+            authorization: token,
+          },
+        })
+          .then(function (response) {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Error en la solicitud GET");
+            }
+          })
+          .then(function (data) {
+            if (data.status === "success") {
+              table.innerHTML = "";
+    
+              data.data.empleados.forEach(function (empleado) {
+                var row = table.insertRow();
+    
+                var idempleadoCell = row.insertCell();
+                idempleadoCell.textContent = empleado.idempleado;
+    
+                var nombreCell = row.insertCell();
+                nombreCell.textContent = empleado.nombre;
+    
+                var apellidoCell = row.insertCell();
+                apellidoCell.textContent = empleado.apellido;
+    
+                var emailCell = row.insertCell();
+                emailCell.textContent = empleado.email;
+    
+                var rolCell = row.insertCell();
+                rolCell.textContent = empleado.rol;
+    
+                var telefonoCell = row.insertCell();
+                telefonoCell.textContent = empleado.telefono;
+    
+                var selectCell = row.insertCell();
+                var selectButton = document.createElement("button");
+                selectButton.textContent = "Seleccionar";
+                selectButton.onclick = function () {
+                  selectEmpleadoEliminar(selectButton);
+                };
+                selectCell.appendChild(selectButton);
+              });
+            } else {
+              throw new Error("Error en la respuesta del servidor");
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+    
+      function selectEmpleadoEliminar(button) {
+        var row = button.parentNode.parentNode;
+        var idempleado = row.cells[0].textContent;
+        document.getElementById("idempleado-eliminar").value = idempleado;
+      }
+    
+      function eliminarEmpleado() {
+        var idempleado = document.getElementById("idempleado-eliminar").value;
+        if (!idempleado) {
+          alert("Se requiere seleccionar algún empleado");
+        } else {
+          fetch("http://localhost:3000/empleados/" + idempleado, {
+            method: "DELETE",
+            headers: {
+              authorization: token,
+            },
+          })
+            .then(function (response) {
+              if (response.ok) {
+                return response.json();
+              } else {
+                throw new Error("Error en la solicitud DELETE");
+              }
+            })
+            .then(function (data) {
+              if (data.status === "success") {
+                alert("Empleado eliminado exitosamente");
+                mostrarTablaEliminar();
+                limpiarFormularioEliminar();
+              } else {
+                throw new Error("Error en la respuesta del servidor");
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      }
+    
+      function limpiarFormularioEliminar() {
+        document.getElementById("idempleado-eliminar").value = "";
+      }
+    
+      function mostrarTablaActualizar() {
+        var table = document.getElementById("empleados-table");
+    
+        fetch("http://localhost:3000/empleados", {
+          method: "GET",
+          headers: {
+            authorization: token,
+          },
+        })
+          .then(function (response) {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Error en la solicitud GET");
+            }
+          })
+          .then(function (data) {
+            if (data.status === "success") {
+              table.innerHTML = "";
+    
+              data.data.empleados.forEach(function (empleado) {
+                var row = table.insertRow();
+    
+                var idempleadoCell = row.insertCell();
+                idempleadoCell.textContent = empleado.idempleado;
+    
+                var nombreCell = row.insertCell();
+                nombreCell.textContent = empleado.nombre;
+    
+                var apellidoCell = row.insertCell();
+                apellidoCell.textContent = empleado.apellido;
+    
+                var emailCell = row.insertCell();
+                emailCell.textContent = empleado.email;
+    
+                var rolCell = row.insertCell();
+                rolCell.textContent = empleado.rol;
+    
+                var telefonoCell = row.insertCell();
+                telefonoCell.textContent = empleado.telefono;
+    
+                var selectCell = row.insertCell();
+                var selectButton = document.createElement("button");
+                selectButton.textContent = "Seleccionar";
+                selectButton.onclick = function () {
+                  selectEmpleadoActualizar(selectButton);
+                };
+                selectCell.appendChild(selectButton);
+              });
+            } else {
+              throw new Error("Error en la respuesta del servidor");
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+    
+      function selectEmpleadoActualizar(button) {
+        const row = button.parentNode.parentNode;
+        const idempleado = row.cells[0].innerText;
+        const nombre = row.cells[1].innerText;
+        const apellido = row.cells[2].innerText;
+        const email = row.cells[3].innerText;
+        const rol = row.cells[4].innerText;
+        const telefono = row.cells[5].innerText;
+    
+        document.getElementById("idempleado-actualizar").value = idempleado;
+        document.getElementById("nombre-actualizar").value = nombre;
+        document.getElementById("apellido-actualizar").value = apellido;
+        document.getElementById("email-actualizar").value = email;
+        document.getElementById("rol-actualizar").value = rol;
+        document.getElementById("telefono-actualizar").value = telefono;
+      }
+    
+      function actualizarEmpleado() {
+        var idempleado = document.getElementById("idempleado-actualizar").value;
+        var nombre = document.getElementById("nombre-actualizar").value;
+        var apellido = document.getElementById("apellido-actualizar").value;
+        var email = document.getElementById("email-actualizar").value;
+        var rol = document.getElementById("rol-actualizar").value;
+        var telefono = document.getElementById("telefono-actualizar").value;
+    
+        if (!idempleado || !nombre || !apellido || !email || !rol || !telefono) {
+          alert("Por favor, complete todos los campos.");
+        } else {
+          var empleado = {
+            idempleado: idempleado,
+            nombre: nombre,
+            apellido: apellido,
+            email: email,
+            rol: rol,
+            telefono: telefono,
+          };
+    
+          fetch("http://localhost:3000/empleados/" + idempleado, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: token,
+            },
+            body: JSON.stringify(empleado),
+          })
+            .then(function (response) {
+              if (response.ok) {
+                return response.json();
+              } else {
+                throw new Error("Error en la solicitud PUT");
+              }
+            })
+            .then(function (data) {
+              if (data.status === "success") {
+                alert("Empleado actualizado exitosamente");
+                mostrarTablaActualizar();
+                limpiarFormularioActualizar();
+              } else {
+                throw new Error("Error en la respuesta del servidor");
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      }
+    
+      function limpiarFormularioActualizar() {
+        document.getElementById("idempleado-actualizar").value = "";
+        document.getElementById("nombre-actualizar").value = "";
+        document.getElementById("apellido-actualizar").value = "";
+        document.getElementById("email-actualizar").value = "";
+        document.getElementById("rol-actualizar").value = "";
+        document.getElementById("telefono-actualizar").value = "";
+      }
+    
+      function agregarEmpleado() {
+        var form = document.getElementById("agregar-form");
+        var nombre = form.elements["nombre"].value;
+        var apellido = form.elements["apellido"].value;
+        var email = form.elements["email"].value;
+        var rol = form.elements["rol"].value;
+        var telefono = form.elements["telefono"].value;
+        if (!nombre || !apellido || !email || !rol || !telefono) {
+          alert("Por favor, complete todos los campos.");
+        } else {
+          var data = {
+            nombre: nombre,
+            apellido: apellido,
+            email: email,
+            rol: rol,
+            telefono: telefono,
+          };
+    
+          fetch("http://localhost:3000/empleados", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: token,
+            },
+            body: JSON.stringify(data),
+          })
+            .then(function (response) {
+              if (response.ok) {
+                return response.json();
+              } else {
+                throw new Error("Error en la solicitud POST");
+              }
+            })
+            .then(function (data) {
+              if (data.status === "success") {
+                alert("Empleado agregado exitosamente");
+                form.reset();
+              } else {
+                throw new Error("Error en la respuesta del servidor");
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      }
+    </script>
+
+      
+  </body>
+</html>

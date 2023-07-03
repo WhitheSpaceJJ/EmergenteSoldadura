@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gestión de Clientes</title>
+  </head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #f2f2f2;
+      padding: 20px;
+      text-align: center;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    section {
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    h2 {
+      margin: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button.primary {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    button.secondary {
+      background-color: #f2f2f2;
+      color: black;
+    }
+
+    form {
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button[type="submit"] {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+    }
+  </style>
+  <script>
+    var token;
+    window.onload = function () {
+      var urlParams = new URLSearchParams(window.location.search);
+      token = urlParams.get("token");
+
+      if (!token) {
+        alert("Requiere iniciar sesión");
+        window.location.href = "index.html";
+      } else {
+        console.log("Token:", token);
+      }
+    };
+  </script>
+  <body>
+    <header>
+      <h1>Gestión de Clientes</h1>
+    </header>
+
+    <nav>
+      <button onclick="showSection('agregar')">Agregar Cliente</button>
+      <button onclick="showSection('actualizar')">Actualizar Cliente</button>
+      <button onclick="showSection('eliminar')">Eliminar Cliente</button>
+      <button onclick="showSection('consultar')">Consultar Clientes</button>
+    </nav>
+
+    <main>
+      <section id="agregar-section" style="display: none">
+        <h2>Agregar Cliente</h2>
+        <form id="agregar-form">
+          <div>
+            <label for="rfc">RFC:</label>
+            <input type="text" id="rfc" name="rfc" required />
+          </div>
+          <div>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required />
+          </div>
+          <div>
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" required />
+          </div>
+          <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+          <div>
+            <label for="empresa">Empresa:</label>
+            <input type="text" id="empresa" name="empresa" required />
+          </div>
+          <div>
+            <label for="telefono">Teléfono:</label>
+            <input type="text" id="telefono" name="telefono" required />
+          </div>
+          <button type="button" onclick="agregarCliente()">
+            Agregar Cliente
+          </button>
+        </form>
+      </section>
+  
+      <section id="actualizar-section" style="display: none">
+        <h2>Actualizar Cliente</h2>
+        <table id="clientes-table">
+          <thead>
+            <tr>
+              <th>RFC</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Email</th>
+              <th>Empresa</th>
+              <th>Teléfono</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <form id="actualizar-form">
+          <div>
+            <label for="rfc-actualizar">RFC:</label>
+            <input
+              type="text"
+              id="rfc-actualizar"
+              name="rfc-actualizar"
+              required
+            />
+          </div>
+          <div>
+            <label for="nombre-actualizar">Nombre:</label>
+            <input
+              type="text"
+              id="nombre-actualizar"
+              name="nombre-actualizar"
+              required
+            />
+          </div>
+          <div>
+            <label for="apellido-actualizar">Apellido:</label>
+            <input
+              type="text"
+              id="apellido-actualizar"
+              name="apellido-actualizar"
+              required
+            />
+          </div>
+          <div>
+            <label for="email-actualizar">Email:</label>
+            <input
+              type="email"
+              id="email-actualizar"
+              name="email-actualizar"
+              required
+            />
+          </div>
+          <div>
+            <label for="empresa-actualizar">Empresa:</label>
+            <input
+              type="text"
+              id="empresa-actualizar"
+              name="empresa-actualizar"
+              required
+            />
+          </div>
+          <div>
+            <label for="telefono-actualizar">Teléfono:</label>
+            <input
+              type="text"
+              id="telefono-actualizar"
+              name="telefono-actualizar"
+              required
+            />
+          </div>
+          <button type="button" onclick="actualizarCliente()">
+            Actualizar Cliente
+          </button>
+        </form>
+      </section>
+
+      <section id="eliminar-section" style="display: none">
+        <h2>Eliminar Cliente</h2>
+        <table id="clientes-eliminar-table">
+          <thead>
+            <tr>
+              <th>RFC</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Email</th>
+              <th>Empresa</th>
+              <th>Teléfono</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <form id="eliminar-form">
+          <div>
+            <label for="rfc-eliminar">RFC:</label>
+            <input type="text" id="rfc-eliminar" name="rfc-eliminar" required />
+          </div>
+          <button type="button" onclick="eliminarCliente()">
+            Eliminar Cliente
+          </button>
+        </form>
+      </section>
+
+      <section id="consultar-section" style="display: none">
+        <h2>Consultar Clientes</h2>
+        <table id="clientes-consultar-table">
+          <thead>
+            <tr>
+              <th>RFC</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Email</th>
+              <th>Empresa</th>
+              <th>Teléfono</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </main>
+
+    <script>
+      function showSection(section) {
+        document.querySelectorAll("section").forEach((sec) => {
+          sec.style.display = "none";
+        });
+        document.getElementById(section + "-section").style.display = "block";
+        if (section === "consultar") {
+          mostrarTabla();
+        } else if (section === "eliminar") {
+          mostrarTablaEliminar();
+        } else if (section === "actualizar") {
+          mostrarTablaActualizar();
+        } 
+      }
+      function mostrarTabla() {
+        var table = document.getElementById("clientes-consultar-table");
+
+        fetch("http://localhost:3000/clientes", {
+          method: "GET",
+          headers: {
+            authorization: token,
+          },
+        })
+          .then(function (response) {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Error en la solicitud GET");
+            }
+          })
+          .then(function (data) {
+            if (data.status === "success") {
+              table.innerHTML = "";
+
+              data.data.clientes.forEach(function (cliente) {
+                var row = table.insertRow();
+
+                var rfcCell = row.insertCell();
+                rfcCell.textContent = cliente.rfc;
+
+                var nombreCell = row.insertCell();
+                nombreCell.textContent = cliente.nombre;
+
+                var apellidoCell = row.insertCell();
+                apellidoCell.textContent = cliente.apellido;
+
+                var emailCell = row.insertCell();
+                emailCell.textContent = cliente.email;
+
+                var empresaCell = row.insertCell();
+                empresaCell.textContent = cliente.empresa;
+
+                var telefonoCell = row.insertCell();
+                telefonoCell.textContent = cliente.telefono;
+              });
+            } else {
+              throw new Error("Error en la respuesta del servidor");
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+      function selectClienteActualizar(button) {
+        const row = button.parentNode.parentNode;
+        const rfc = row.cells[0].innerText;
+        const nombre = row.cells[1].innerText;
+        const apellido = row.cells[2].innerText;
+        const email = row.cells[3].innerText;
+        const empresa = row.cells[4].innerText;
+        const telefono = row.cells[5].innerText;
+
+        document.getElementById("rfc-actualizar").value = rfc;
+        document.getElementById("nombre-actualizar").value = nombre;
+        document.getElementById("apellido-actualizar").value = apellido;
+        document.getElementById("email-actualizar").value = email;
+        document.getElementById("empresa-actualizar").value = empresa;
+        document.getElementById("telefono-actualizar").value = telefono;
+      }
+      function mostrarTablaEliminar() {
+        var table = document.getElementById("clientes-eliminar-table");
+
+        fetch("http://localhost:3000/clientes", {
+          method: "GET",
+          headers: {
+            authorization: token,
+          },
+        })
+          .then(function (response) {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Error en la solicitud GET");
+            }
+          })
+          .then(function (data) {
+            if (data.status === "success") {
+              table.innerHTML = "";
+
+              data.data.clientes.forEach(function (cliente) {
+                var row = table.insertRow();
+
+                var rfcCell = row.insertCell();
+                rfcCell.textContent = cliente.rfc;
+
+                var nombreCell = row.insertCell();
+                nombreCell.textContent = cliente.nombre;
+
+                var apellidoCell = row.insertCell();
+                apellidoCell.textContent = cliente.apellido;
+
+                var emailCell = row.insertCell();
+                emailCell.textContent = cliente.email;
+
+                var empresaCell = row.insertCell();
+                empresaCell.textContent = cliente.empresa;
+
+                var telefonoCell = row.insertCell();
+                telefonoCell.textContent = cliente.telefono;
+
+                var selectCell = row.insertCell();
+                var selectButton = document.createElement("button");
+                selectButton.textContent = "Seleccionar";
+                selectButton.onclick = function () {
+                  selectClienteEliminar(selectButton);
+                };
+                selectCell.appendChild(selectButton);
+              });
+            } else {
+              throw new Error("Error en la respuesta del servidor");
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+
+      function selectClienteEliminar(button) {
+        var row = button.parentNode.parentNode;
+        var rfc = row.cells[0].textContent;
+        document.getElementById("rfc-eliminar").value = rfc;
+      }
+
+      function eliminarCliente() {
+        var rfc = document.getElementById("rfc-eliminar").value;
+        if (!rfc) {
+          alert("Se requiere seleccionar algun cliente");
+        } else {
+          fetch("http://localhost:3000/clientes/" + rfc, {
+            method: "DELETE",
+            headers: {
+              authorization: token,
+            },
+          })
+            .then(function (response) {
+              if (response.ok) {
+                return response.json();
+              } else {
+                throw new Error("Error en la solicitud DELETE");
+              }
+            })
+            .then(function (data) {
+              if (data.status === "success") {
+                alert("Cliente eliminado exitosamente");
+                mostrarTablaEliminar();
+                limpiarFormularioEliminar();
+              } else {
+                throw new Error("Error en la respuesta del servidor");
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      }
+      function limpiarFormularioEliminar() {
+        document.getElementById("rfc-eliminar").value = "";
+      }
+
+      function mostrarTablaActualizar() {
+        var table = document.getElementById("clientes-table");
+
+        fetch("http://localhost:3000/clientes", {
+          method: "GET",
+          headers: {
+            authorization: token,
+          },
+        })
+          .then(function (response) {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Error en la solicitud GET");
+            }
+          })
+          .then(function (data) {
+            if (data.status === "success") {
+              table.innerHTML = "";
+
+              data.data.clientes.forEach(function (cliente) {
+                var row = table.insertRow();
+
+                var rfcCell = row.insertCell();
+                rfcCell.textContent = cliente.rfc;
+
+                var nombreCell = row.insertCell();
+                nombreCell.textContent = cliente.nombre;
+
+                var apellidoCell = row.insertCell();
+                apellidoCell.textContent = cliente.apellido;
+
+                var emailCell = row.insertCell();
+                emailCell.textContent = cliente.email;
+
+                var empresaCell = row.insertCell();
+                empresaCell.textContent = cliente.empresa;
+
+                var telefonoCell = row.insertCell();
+                telefonoCell.textContent = cliente.telefono;
+
+                var selectCell = row.insertCell();
+                var selectButton = document.createElement("button");
+                selectButton.textContent = "Seleccionar";
+                selectButton.onclick = function () {
+                  selectClienteActualizar(selectButton);
+                };
+                selectCell.appendChild(selectButton);
+              });
+            } else {
+              throw new Error("Error en la respuesta del servidor");
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+      function selectClienteActualizar(button) {
+        const row = button.parentNode.parentNode;
+        const rfc = row.cells[0].innerText;
+        const nombre = row.cells[1].innerText;
+        const apellido = row.cells[2].innerText;
+        const email = row.cells[3].innerText;
+        const empresa = row.cells[4].innerText;
+        const telefono = row.cells[5].innerText;
+
+        document.getElementById("rfc-actualizar").value = rfc;
+        document.getElementById("nombre-actualizar").value = nombre;
+        document.getElementById("apellido-actualizar").value = apellido;
+        document.getElementById("email-actualizar").value = email;
+        document.getElementById("empresa-actualizar").value = empresa;
+        document.getElementById("telefono-actualizar").value = telefono;
+      }
+
+      function actualizarCliente() {
+        var rfc = document.getElementById("rfc-actualizar").value;
+        var nombre = document.getElementById("nombre-actualizar").value;
+        var apellido = document.getElementById("apellido-actualizar").value;
+        var email = document.getElementById("email-actualizar").value;
+        var empresa = document.getElementById("empresa-actualizar").value;
+        var telefono = document.getElementById("telefono-actualizar").value;
+
+        if (!rfc || !nombre || !apellido || !email || !empresa || !telefono) {
+          alert("Por favor, complete todos los campos.");
+        } else {
+          var cliente = {
+            rfc: rfc,
+            nombre: nombre,
+            apellido: apellido,
+            email: email,
+            empresa: empresa,
+            telefono: telefono,
+          };
+
+          fetch("http://localhost:3000/clientes/" + rfc, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: token,
+            },
+            body: JSON.stringify(cliente),
+          })
+            .then(function (response) {
+              if (response.ok) {
+                return response.json();
+              } else {
+                throw new Error("Error en la solicitud PUT");
+              }
+            })
+            .then(function (data) {
+              if (data.status === "success") {
+                alert("Cliente actualizado exitosamente");
+                mostrarTablaActualizar();
+                limpiarFormularioActualizar();
+              } else {
+                throw new Error("Error en la respuesta del servidor");
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      }
+
+      function limpiarFormularioActualizar() {
+        document.getElementById("rfc-actualizar").value = "";
+        document.getElementById("nombre-actualizar").value = "";
+        document.getElementById("apellido-actualizar").value = "";
+        document.getElementById("email-actualizar").value = "";
+        document.getElementById("empresa-actualizar").value = "";
+        document.getElementById("telefono-actualizar").value = "";
+      }
+      function agregarCliente() {
+          var form = document.getElementById("agregar-form");
+          var rfc = form.elements["rfc"].value;
+          var nombre = form.elements["nombre"].value;
+          var apellido = form.elements["apellido"].value;
+          var email = form.elements["email"].value;
+          var empresa = form.elements["empresa"].value;
+          var telefono = form.elements["telefono"].value;
+          if (!rfc || !nombre || !apellido || !email || !empresa || !telefono) {
+            alert("Por favor, complete todos los campos.");
+          } else {
+            var data = {
+              rfc: rfc,
+              nombre: nombre,
+              apellido: apellido,
+              email: email,
+              empresa: empresa,
+              telefono: telefono,
+            };
+
+            fetch("http://localhost:3000/clientes", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                authorization: token,
+              },
+              body: JSON.stringify(data),
+            })
+              .then(function (response) {
+                if (response.ok) {
+                  return response.json();
+                } else {
+                  throw new Error("Error en la solicitud POST");
+                }
+              })
+              .then(function (data) {
+                if (data.status === "success") {
+                  alert("Cliente agregado exitosamente");
+                  form.reset();
+                } else {
+                  throw new Error("Error en la respuesta del servidor");
+                }
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          }
+        }
+    </script>
+  </body>
+</html>
